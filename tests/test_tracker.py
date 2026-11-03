@@ -43,7 +43,7 @@ class TrackerTests(unittest.TestCase):
     def test_pdf_chunks_preserve_all_text(self):
         pages = ["[p.1] " + "a" * 230, "[p.2] " + "b" * 190]
         chunks = group_pages(pages, max_chars=100)
-        self.assertEqual("".join(chunks).replace("\\n", ""), "".join(pages))
+        self.assertEqual("".join(chunks).replace("\n", ""), "".join(pages))
         self.assertTrue(len(chunks) > 2)
 
     def test_pending_summary_label(self):
