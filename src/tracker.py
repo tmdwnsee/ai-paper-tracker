@@ -107,9 +107,12 @@ def fetch_papers(max_results: int) -> list[dict]:
 def classify(paper: dict) -> tuple[list[str], int]:
     title = paper["title"].lower()
     body = (paper["title"] + " " + paper["abstract"]).lower()
-    labels = [name for name, terms in TOPICS.items() if any(t in body for t in terms)]
-    strong = sum(1 for term in STRONG_TERMS if term in body)
-    score = min(100, strong * 15 + sum(10 for term in STRONG_TERMS if term in title))
+    def matches(text: str, term: str) -> bool:
+        return re.search(r"(?<![a-z0-9])" + re.escape(term) + r"(?![a-z0-9])", text) is not None
+
+    labels = [name for name, terms in TOPICS.items() if any(matches(body, t) for t in terms)]
+    strong = sum(1 for term in STRONG_TERMS if matches(body, term))
+    score = min(100, strong * 15 + sum(10 for term in STRONG_TERMS if matches(title, term)))
     return labels, score
 
 
@@ -202,7 +205,7 @@ def run(now: datetime | None = None) -> int:
     now = now or datetime.now(timezone.utc)
     days = max(1, min(int(os.getenv("LOOKBACK_DAYS", "7")), 30))
     size = max(10, min(int(os.getenv("MAX_RESULTS", "150")), 500))
-    max_new = max(1, min(int(os.getenv("MAX_NEW_PER_RUN", "15")), 50))
+    max_new = max(1, min(int(os.getenv("MAX_NEW_PER_RUN", "3")), 50))
     max_fulltext = max(0, min(int(os.getenv("MAX_FULLTEXT_PER_RUN", "3")), 10))
     current = read_existing(DATA_PATH)
     seen = {p["id"] for p in current}
@@ -229,8 +232,8 @@ def run(now: datetime | None = None) -> int:
     updated = current + eligible
     summarized = []
     if key and max_fulltext:
-        # Old abstract excerpts are eligible for backfill; process newest papers first.
-        pending = [p for p in reversed(updated)
+        # Backfill older abstract-only records before newly collected papers.
+        pending = [p for p in updated
                    if p.get("summary_type") not in ("fulltext_llm_ko",)
                    and p.get("id") and p.get("title")]
         for paper in pending[:max_fulltext]:
