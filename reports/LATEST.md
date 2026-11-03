@@ -1,9 +1,9 @@
 # AI Paper Digest — 2026-11-03
 
-- Newly archived papers: **21**
+- Newly archived papers: **22**
 - arXiv candidates retrieved: **150**
 - Scores represent **keyword relevance only**, not research quality.
-- Summaries reflect abstracts, not full-text verification.
+- PDF-based summaries are labelled fulltext_llm_ko; other records are pending or legacy excerpts.
 
 ## 1. Pixel-UMI: Learning Environment-Aware Whole-Body Manipulation from Sensorized Human Demonstrations
 
@@ -256,3 +256,15 @@ Contact-rich manipulation benefits from tactile feedback that captures both deta
 - PDF pages: not processed
 
 한국어 본문 요약 대기 중 (OPENAI_API_KEY 필요)
+
+## 22. Discovering hierarchical governing equations for community-structured complex network dynamics with LLM agents
+
+- arXiv: https://arxiv.org/abs/2611.02816
+- Published (UTC): 2026-11-02T09:19:22Z
+- Topics: LLM
+- Keyword relevance: 40/100
+- Authors: Jinlei Zhang, Zixuan Zhang, Hao Qiu, Feng Chen, Jiateng Yin, Xiaoyong Yan, Xiaolei Ma, Hao Sun
+- Summary source: pending_fulltext
+- PDF pages: not processed
+
+한국어 본문 요약 대기 중 (GEMINI_API_KEY 필요)
