@@ -141,10 +141,10 @@ def make_report(papers: list[dict], date: str, source_count: int) -> str:
     lines = [
         f"# AI Paper Digest — {date}",
         "",
-        f"- Newly archived papers: **{len(papers)}**",
+        f"- 한국어 PDF 본문 요약 완료: **{len(papers)}편**",
         f"- arXiv candidates retrieved: **{source_count}**",
         "- Scores represent **keyword relevance only**, not research quality.",
-        "- PDF-based summaries are labelled fulltext_llm_ko; other records are pending or legacy excerpts.",
+        "- 완료된 한국어 PDF 본문 요약만 표시합니다. 실패·미완료 결과는 저장하지 않습니다.",
         "",
     ]
     for i, paper in enumerate(papers, start=1):
@@ -166,16 +166,23 @@ def make_report(papers: list[dict], date: str, source_count: int) -> str:
 
 
 def run(now: datetime | None = None) -> int:
-    """Collect new papers and enrich pending records with Korean PDF summaries."""
+    """Persist and publish ONLY successfully summarized Korean full-text papers."""
     now = now or datetime.now(timezone.utc)
     days = max(1, min(int(os.getenv("LOOKBACK_DAYS", "7")), 30))
     size = max(10, min(int(os.getenv("MAX_RESULTS", "150")), 500))
-    max_new = max(1, min(int(os.getenv("MAX_NEW_PER_RUN", "3")), 50))
     max_fulltext = max(0, min(int(os.getenv("MAX_FULLTEXT_PER_RUN", "1")), 10))
-    current = read_existing(DATA_PATH)
+    current = [p for p in read_existing(DATA_PATH)
+               if p.get("summary_type") == "fulltext_llm_ko" and p.get("summary", "").strip()]
     seen = {p["id"] for p in current}
+    key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not key or max_fulltext == 0:
+        print("No Gemini API key or summarization disabled. Nothing to publish.")
+        return 0
+
     candidates = fetch_papers(size)
-    eligible = []
+    model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+    summarized = []
+    attempts = 0
     for paper in candidates:
         if paper["id"] in seen or not is_recent(paper, now, days):
             continue
@@ -184,65 +191,42 @@ def run(now: datetime | None = None) -> int:
             continue
         paper["topics"] = topics
         paper["relevance_score"] = score
-        paper["summary"] = "한국어 본문 요약 대기 중 (GEMINI_API_KEY 필요)"
-        paper["summary_type"] = "pending_fulltext"
-        paper["collected_at"] = now.isoformat()
-        eligible.append(paper)
-        seen.add(paper["id"])
-        if len(eligible) >= max_new:
+        attempts += 1
+        try:
+            summary, pages, chunks = summarize_fulltext(paper, key, model)
+            paper["summary"] = summary
+            paper["summary_type"] = "fulltext_llm_ko"
+            paper["pdf_pages"] = pages
+            paper["text_chunks"] = chunks
+            paper["collected_at"] = now.isoformat()
+            summarized.append(paper)
+            seen.add(paper["id"])
+            print(f"Full-text Korean summary: {paper['id']} ({pages} pages, {chunks} chunks)")
+        except Exception as exc:
+            print(f"Full-text summary failed for {paper['id']}: {type(exc).__name__}: {str(exc)[:160]}")
+            # Do not save incomplete/abstract-only records; retry in a future run.
+            if "quota exceeded" in str(exc):
+                print("Gemini quota reached; stopping this run.")
+                break
+        if attempts >= max_fulltext:
             break
 
-    key = os.getenv("GEMINI_API_KEY", "").strip()
-    model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
-    updated = current + eligible
-    summarized = []
-    if key and max_fulltext:
-        # Backfill older abstract-only records before newly collected papers.
-        pending = [p for p in updated
-                   if p.get("summary_type") not in ("fulltext_llm_ko",)
-                   and p.get("id") and p.get("title")]
-        for paper in pending[:max_fulltext]:
-            try:
-                summary, pages, chunks = summarize_fulltext(paper, key, model)
-                paper["summary"] = summary
-                paper["summary_type"] = "fulltext_llm_ko"
-                paper["pdf_pages"] = pages
-                paper["text_chunks"] = chunks
-                paper.pop("summary_error", None)
-                summarized.append(paper)
-                print(f"Full-text Korean summary: {paper['id']} ({pages} pages, {chunks} chunks)")
-            except Exception as exc:
-                # Do not accidentally claim an abstract excerpt is a full-paper summary.
-                paper["summary_error"] = type(exc).__name__ + ": " + str(exc)[:160]
-                print(f"Full-text summary failed for {paper['id']}: {paper['summary_error']}")
-                # Do not exhaust the free quota with repeat requests in one run.
-                if "quota exceeded" in str(exc):
-                    print("Gemini free quota reached; stop further summaries until a later run.")
-                    break
-
-    if not key:
-        print("GEMINI_API_KEY missing; full-paper Korean summaries are disabled.")
-    if not eligible and not summarized:
-        print(f"No new papers or successful summaries among {len(candidates)} candidates.")
+    if not summarized:
+        print(f"No completed Korean full-text summaries among {len(candidates)} candidates.")
         return 0
 
+    updated = current + summarized
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     date = now.astimezone(timezone(timedelta(hours=9))).date().isoformat()
-
-    # Rebuild the daily digest from today's collected papers plus any backfilled summaries.
-    daily = [p for p in updated
-             if p.get("collected_at", "").startswith(now.date().isoformat())]
-    by_id = {p["id"]: p for p in daily + summarized}
-    report = make_report(list(by_id.values()), date, len(candidates))
+    # Keep the day's successfully processed papers in the daily report.
+    daily = [p for p in updated if p.get("collected_at", "")[:10] == now.date().isoformat()]
+    report = make_report(daily, date, len(candidates))
     (REPORT_DIR / f"{date}.md").write_text(report, encoding="utf-8")
     (REPORT_DIR / "LATEST.md").write_text(report, encoding="utf-8")
-    DATA_PATH.write_text(
-        json.dumps(updated, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    print(f"Archived {len(eligible)} new papers; generated {len(summarized)} full-text summaries.")
-    return len(eligible) + len(summarized)
+    DATA_PATH.write_text(json.dumps(updated, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"Saved {len(summarized)} fully summarized Korean papers; no unfinished results committed.")
+    return len(summarized)
 
 
 if __name__ == "__main__":
