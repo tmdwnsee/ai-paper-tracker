@@ -1,6 +1,6 @@
 # AI Paper Digest — 2026-11-03
 
-- Newly archived papers: **18**
+- Newly archived papers: **21**
 - arXiv candidates retrieved: **150**
 - Scores represent **keyword relevance only**, not research quality.
 - Summaries reflect abstracts, not full-text verification.
@@ -216,6 +216,42 @@ Contact-rich manipulation benefits from tactile feedback that captures both deta
 - Topics: LLM
 - Keyword relevance: 40/100
 - Authors: Junzhao Huang, Xi Wu, Zihan Wang, Zijing Wang, Ming Wang, Kang Liu, Xiaocui Yang, Shi Feng
+- Summary source: pending_fulltext
+- PDF pages: not processed
+
+한국어 본문 요약 대기 중 (OPENAI_API_KEY 필요)
+
+## 19. Towards a Trustworthy and Governable Internet of Agentics: An Architectural Perspective on Protocols, Systems, and Services
+
+- arXiv: https://arxiv.org/abs/2611.03066
+- Published (UTC): 2026-11-02T12:54:14Z
+- Topics: LLM, Agent
+- Keyword relevance: 45/100
+- Authors: Haoyi Xiong, Yi Liu, Jiang Bian, Peng Diao, Bin Zhu, Tingting Hu, Yi Wang, Sumi Helal
+- Summary source: pending_fulltext
+- PDF pages: not processed
+
+한국어 본문 요약 대기 중 (OPENAI_API_KEY 필요)
+
+## 20. BLPO: Beyond-Local Policy Optimization for Long-Horizon LLM Agents
+
+- arXiv: https://arxiv.org/abs/2611.03005
+- Published (UTC): 2026-11-02T12:10:05Z
+- Topics: LLM
+- Keyword relevance: 40/100
+- Authors: Xuanren Chen, Chongyang Tao, Wenpeng Hu, Yong Wang, Bo Deng, Xinlei Zheng, Shuai Ma
+- Summary source: pending_fulltext
+- PDF pages: not processed
+
+한국어 본문 요약 대기 중 (OPENAI_API_KEY 필요)
+
+## 21. SpecOPD: Branch-Parallel On-Policy Distillation for Speculative Decoding
+
+- arXiv: https://arxiv.org/abs/2611.02846
+- Published (UTC): 2026-11-02T09:47:06Z
+- Topics: LLM, Agent
+- Keyword relevance: 30/100
+- Authors: Tianyu Liu, Jun Zhang, Wenjie Huang, Yuhao Shen, Tianqi Xu, Xinyue Hao, Hongyaoxing Gu, Xuyang Liu
 - Summary source: pending_fulltext
 - PDF pages: not processed
 
