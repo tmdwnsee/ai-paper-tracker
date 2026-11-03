@@ -193,7 +193,7 @@ def run(now: datetime | None = None) -> int:
             break
 
     key = os.getenv("GEMINI_API_KEY", "").strip()
-    model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
+    model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
     updated = current + eligible
     summarized = []
     if key and max_fulltext:
