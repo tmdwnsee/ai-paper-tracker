@@ -1,6 +1,6 @@
 """Daily arXiv metadata collector and research digest.
 
-Standard-library only. Optional OpenAI summaries require OPENAI_API_KEY.
+Standard-library only for metadata; optional Gemini PDF summaries require GEMINI_API_KEY.
 """
 from __future__ import annotations
 
@@ -124,41 +124,6 @@ def is_recent(paper: dict, now: datetime, days: int) -> bool:
     return now - timedelta(days=days) <= published <= now + timedelta(minutes=5)
 
 
-def fallback_summary(abstract: str) -> str:
-    """Excerpt only: never invent an abstract-based paraphrase."""
-    text = clean(abstract)
-    return text[:350].rstrip() + ("…" if len(text) > 350 else "")
-
-
-def llm_summary(paper: dict, key: str, model: str) -> str:
-    """Optional summary based only on title and abstract, not the full paper."""
-    payload = {
-        "model": model,
-        "temperature": 0.2,
-        "max_tokens": 220,
-        "messages": [
-            {"role": "system", "content":
-             "Summarize the following paper title and abstract in 2 concise Korean sentences. "
-             "Only use the provided abstract; avoid invented claims or experimental numbers."},
-            {"role": "user", "content":
-             f"Title: {paper['title']}\nAbstract: {paper['abstract']}"},
-        ],
-    }
-    req = urllib.request.Request(
-        "https://api.openai.com/v1/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Authorization": "Bearer " + key,
-            "Content-Type": "application/json",
-            "User-Agent": "AIPaperTracker/1.0",
-        },
-        method="POST",
-    )
-    with urllib.request.urlopen(req, timeout=35) as response:
-        obj = json.load(response)
-    return clean(obj["choices"][0]["message"]["content"])
-
-
 def read_existing(path: Path) -> list[dict]:
     if not path.exists():
         return []
@@ -179,7 +144,7 @@ def make_report(papers: list[dict], date: str, source_count: int) -> str:
         f"- Newly archived papers: **{len(papers)}**",
         f"- arXiv candidates retrieved: **{source_count}**",
         "- Scores represent **keyword relevance only**, not research quality.",
-        "- Summaries reflect abstracts, not full-text verification.",
+        "- PDF-based summaries are labelled fulltext_llm_ko; other records are pending or legacy excerpts.",
         "",
     ]
     for i, paper in enumerate(papers, start=1):
@@ -206,7 +171,7 @@ def run(now: datetime | None = None) -> int:
     days = max(1, min(int(os.getenv("LOOKBACK_DAYS", "7")), 30))
     size = max(10, min(int(os.getenv("MAX_RESULTS", "150")), 500))
     max_new = max(1, min(int(os.getenv("MAX_NEW_PER_RUN", "3")), 50))
-    max_fulltext = max(0, min(int(os.getenv("MAX_FULLTEXT_PER_RUN", "3")), 10))
+    max_fulltext = max(0, min(int(os.getenv("MAX_FULLTEXT_PER_RUN", "1")), 10))
     current = read_existing(DATA_PATH)
     seen = {p["id"] for p in current}
     candidates = fetch_papers(size)
@@ -219,7 +184,7 @@ def run(now: datetime | None = None) -> int:
             continue
         paper["topics"] = topics
         paper["relevance_score"] = score
-        paper["summary"] = "한국어 본문 요약 대기 중 (OPENAI_API_KEY 필요)"
+        paper["summary"] = "한국어 본문 요약 대기 중 (GEMINI_API_KEY 필요)"
         paper["summary_type"] = "pending_fulltext"
         paper["collected_at"] = now.isoformat()
         eligible.append(paper)
@@ -227,8 +192,8 @@ def run(now: datetime | None = None) -> int:
         if len(eligible) >= max_new:
             break
 
-    key = os.getenv("OPENAI_API_KEY", "").strip()
-    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    key = os.getenv("GEMINI_API_KEY", "").strip()
+    model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
     updated = current + eligible
     summarized = []
     if key and max_fulltext:
@@ -250,8 +215,13 @@ def run(now: datetime | None = None) -> int:
                 # Do not accidentally claim an abstract excerpt is a full-paper summary.
                 paper["summary_error"] = type(exc).__name__ + ": " + str(exc)[:160]
                 print(f"Full-text summary failed for {paper['id']}: {paper['summary_error']}")
-                # Preserve the previous summary; a failed PDF is not marked as full-text.
+                # Do not exhaust the free quota with repeat requests in one run.
+                if "quota exceeded" in str(exc):
+                    print("Gemini free quota reached; stop further summaries until a later run.")
+                    break
 
+    if not key:
+        print("GEMINI_API_KEY missing; full-paper Korean summaries are disabled.")
     if not eligible and not summarized:
         print(f"No new papers or successful summaries among {len(candidates)} candidates.")
         return 0
