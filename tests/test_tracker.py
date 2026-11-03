@@ -2,6 +2,7 @@ import unittest
 from datetime import datetime, timezone
 
 from src.tracker import arxiv_id, classify, is_recent, make_report, parse_feed
+from src.fulltext import group_pages
 
 
 SAMPLE = b"""<?xml version="1.0" encoding="UTF-8"?>
@@ -38,6 +39,20 @@ class TrackerTests(unittest.TestCase):
         paper = parse_feed(SAMPLE)[0]
         self.assertTrue(is_recent(paper, datetime(2026, 11, 3, tzinfo=timezone.utc), 7))
         self.assertFalse(is_recent(paper, datetime(2026, 12, 3, tzinfo=timezone.utc), 7))
+
+    def test_pdf_chunks_preserve_all_text(self):
+        pages = ["[p.1] " + "a" * 230, "[p.2] " + "b" * 190]
+        chunks = group_pages(pages, max_chars=100)
+        self.assertEqual("".join(chunks).replace("\\n", ""), "".join(pages))
+        self.assertTrue(len(chunks) > 2)
+
+    def test_pending_summary_label(self):
+        paper = parse_feed(SAMPLE)[0]
+        paper.update(topics=["RAG"], relevance_score=45,
+                     summary="한국어 본문 요약 대기 중", summary_type="pending_fulltext")
+        report = make_report([paper], "2026-11-03", 10)
+        self.assertIn("pending_fulltext", report)
+        self.assertIn("한국어 본문 요약 대기 중", report)
 
     def test_report(self):
         paper = parse_feed(SAMPLE)[0]
