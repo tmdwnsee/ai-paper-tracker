@@ -1,23 +1,24 @@
 # AI Paper Tracker
 
-arXiv에서 **RAG, LLM, AI Agent** 관련 신규 논문을 수집하고, 중복 제거·키워드 분류·요약 후 GitHub에 리포트를 자동 반영하는 프로젝트입니다.
+arXiv에서 **RAG, LLM, AI Agent** 관련 신규 논문을 수집하고, 중복 제거·키워드 분류·**PDF 본문 전체를 바탕으로 한 한국어 요약** 후 GitHub에 리포트를 자동 반영하는 프로젝트입니다.
 
 ## 작동 방식
 
-`arXiv API → Atom XML 파싱 → 관련도 분류 → 신규 논문 식별 → (선택) LLM 요약 → JSON / Markdown → GitHub Actions 커밋`
+`arXiv API → 신규 논문 식별 → PDF 다운로드 → 페이지별 텍스트 추출 → 구간별 한국어 메모 → 종합 한국어 요약 → JSON / Markdown → GitHub Actions 커밋`
 
 - **자동 실행**: 매일 **오전 9시, Asia/Seoul** (GitHub Actions 예약 실행)
 - **신규 논문이 없으면 파일을 수정하지 않습니다.** 의미 없는 커밋을 만들지 않습니다.
 - **중복 기준**: arXiv 논문 ID (버전 번호 제외)
-- **LLM 요약은 선택**: `OPENAI_API_KEY`가 없으면 초록 기반 발췌 요약으로 동작
+- **본문 요약**: `OPENAI_API_KEY`가 있어야 PDF 본문을 구간별로 분석하고 한국어로 요약합니다. 키가 없으면 신규 논문만 수집하고 요약은 대기 상태로 둡니다. 기존 초록 발췌 기록도 요약 대상으로 다시 처리합니다.
 - **상태 보관**: `data/papers.json`에 기존 논문 기록, `reports/LATEST.md`에 가장 최근 수집 결과
 - 최초 실행에는 최근 `LOOKBACK_DAYS`일 이내 논문을 신규로 간주합니다.
 
 ## 실행 방법
 
-Python **3.11+**가 필요합니다. 외부 Python 패키지 없이 실행됩니다.
+Python **3.11+**가 필요합니다. PDF 파싱에 PyMuPDF를 사용합니다.
 
 ```bash
+python -m pip install -r requirements.txt
 python -m src.tracker
 python -m unittest discover -s tests -v
 ```
@@ -31,6 +32,8 @@ python -m unittest discover -s tests -v
 | `MAX_NEW_PER_RUN` | `15` | 실행당 저장할 신규 논문 최대 수 |
 | `OPENAI_API_KEY` | 없음 | 있으면 LLM 요약 활성화 |
 | `OPENAI_MODEL` | `gpt-4o-mini` | 요약 모델 |
+| `MAX_FULLTEXT_PER_RUN` | `3` | 매 실행당 PDF 본문 한국어 요약 최대 건수 (비용 제한) |
+| `MAX_PAPER_CHUNKS` | `16` | 논문당 최대 분석 구간 수 |
 | `ARXIV_USER_AGENT` | `AIPaperTracker/1.0 (research metadata collection)` | API 요청 식별 |
 
 ## GitHub 저장소 설정
@@ -50,6 +53,8 @@ python -m unittest discover -s tests -v
 ```text
 .github/workflows/daily.yml  # 예약 실행, 테스트, 자동 커밋
 src/tracker.py               # arXiv 수집, 분석, 저장
+src/fulltext.py              # PDF 본문 추출 및 한국어 단계별 요약
+requirements.txt             # PDF 추출 의존성
 tests/test_tracker.py        # 파서·중복 처리 테스트
 data/papers.json             # 수집된 논문
 reports/LATEST.md            # 최근 업데이트
@@ -60,7 +65,10 @@ reports/YYYY-MM-DD.md        # 신규 논문이 있던 날의 리포트
 
 - arXiv 제출일 및 검색 정렬에 따른 후보 목록을 수집하므로 arXiv의 모든 관련 논문을 완전하게 수집한다고 보장하지 않습니다.
 - 키워드 기반 관련도 점수는 학술적 중요도나 논문의 품질을 나타내지 않습니다.
-- LLM 요약은 초록만 사용하며, 원문 전체를 읽고 검증한 결과가 아닙니다.
+- PDF의 텍스트를 모든 페이지에서 추출해 구간별로 분석하지만, 수식·표·이미지·스캔 PDF의 정확한 해석은 보장되지 않습니다.
+- PDF 추출 실패·구간 수 제한 초과·API 오류 시 **본문 요약 성공으로 표시하지 않습니다**.
+- 생성된 요약은 LLM 결과로 별도 사실 검증이 필요합니다.
+- 기본 설정은 요약 최대 3건/일이며, 논문 길이에 따라 API 비용이 달라집니다.
 - 수집된 제목과 초록은 원문 출처에 귀속됩니다. 상세 내용은 각 arXiv 링크에서 확인하세요.
 
 ## 참고
