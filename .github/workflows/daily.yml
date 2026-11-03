@@ -34,7 +34,7 @@ jobs:
           OPENAI_MODEL: gpt-4o-mini
           LOOKBACK_DAYS: "7"
           MAX_RESULTS: "150"
-          MAX_NEW_PER_RUN: "15"
+          MAX_NEW_PER_RUN: "3"
           MAX_FULLTEXT_PER_RUN: "3"
           MAX_PAPER_CHUNKS: "16"
         run: python -m src.tracker
