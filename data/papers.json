@@ -1,1 +1,466 @@
-[]
+[
+  {
+    "id": "2611.03647",
+    "title": "Pixel-UMI: Learning Environment-Aware Whole-Body Manipulation from Sensorized Human Demonstrations",
+    "abstract": "Sensorized human demonstrations offer scalable data for mobile manipulation, but embodiment differences complicate policy learning. We present Pixel-UMI, a pipeline for learning environment-aware whole-body policies from human data. We first introduce Environment-Aware Retargeting (EAR), which combines reconstructed scene geometry with demonstrated head and gripper trajectories to determine robot posture and generate collision-aware joint and base targets. Delay-calibrated action assignment converts these trajectories into actions. However, kinematic differences can leave residual pose errors, creating viewpoint mismatches between human demonstrations and robot observations. We therefore introduce Retargeting-Error-Aware Masking (REAM), which uses these errors during training to reduce reliance on mismatched views at deployment. Finally, because estimated actions cannot fully capture contact-rich interactions, we collect on-policy human corrections through DAgger to improve performance. We evaluate Pixel-UMI on five challenging tasks spanning articulated-object manipulation, deformable-object handling, constrained-space reaching, whole-body collision avoidance, and contact-rich bimanual coordination, achieving 87.0% average task progress. Video results are available at https://pixel-robot.com/pixel-umi",
+    "authors": [
+      "Jason Jingzhou Liu",
+      "Tony Tao",
+      "Deepak Pathak",
+      "Ruslan Salakhutdinov"
+    ],
+    "published": "2026-11-02T18:59:32Z",
+    "updated": "2026-11-02T18:59:32Z",
+    "url": "https://arxiv.org/abs/2611.03647",
+    "categories": [
+      "cs.RO",
+      "cs.AI",
+      "cs.CV",
+      "cs.LG",
+      "eess.SY"
+    ],
+    "topics": [
+      "RAG"
+    ],
+    "relevance_score": 15,
+    "summary": "Sensorized human demonstrations offer scalable data for mobile manipulation, but embodiment differences complicate policy learning. We present Pixel-UMI, a pipeline for learning environment-aware whole-body policies from human data. We first introduce Environment-Aware Retargeting (EAR), which combines reconstructed scene geometry with demonstrated…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03641",
+    "title": "From Natural Language to Exact Cover: A Neuro-Symbolic Approach to Zebra Puzzles",
+    "abstract": "Chain-of-Thought (CoT) generation has substantially improved the performance of Large Language Models (LLMs) on complex reasoning tasks, including code generation, data analysis, and exam-style question answering. Despite these advances, purely neural LLMs continue to struggle with elementary logical reasoning problems and lack the determinism, soundness, and reliability characteristic of symbolic reasoning systems. Conversely, classical symbolic methods such as SAT solving and exact cover guarantee correctness and completeness, but require problems to be expressed in highly specialized formal encodings, limiting their applicability to natural language inputs. In this work, we present a synergistic neuro-symbolic framework that bridges this gap by combining neural semantic parsing with deterministic exact cover reasoning. Given a Zebra-style logic puzzle in natural language, an LLM translates entities and constraints into structured tool calls that construct an exact cover instance. A symbolic solver then computes the solution and provides feedback to iteratively refine invalid, under- or overconstrained encodings, exploiting the uniqueness property of Zebra puzzles. We conduct a comprehensive empirical evaluation across multiple parameter scales, post-training paradigms, and LLM families. The results demonstrate that our hybrid approach consistently outperforms strong plain neural baselines, including CoT prompting, as well as recent neuro-symbolic methods.",
+    "authors": [
+      "Paulius Skaisgiris",
+      "Thomas Pammer",
+      "Veronika Semmelrock",
+      "Mykyta Ielanskyi",
+      "Maximilian Heisinger",
+      "Erich Kobler"
+    ],
+    "published": "2026-11-02T18:58:21Z",
+    "updated": "2026-11-02T18:58:21Z",
+    "url": "https://arxiv.org/abs/2611.03641",
+    "categories": [
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM"
+    ],
+    "relevance_score": 30,
+    "summary": "Chain-of-Thought (CoT) generation has substantially improved the performance of Large Language Models (LLMs) on complex reasoning tasks, including code generation, data analysis, and exam-style question answering. Despite these advances, purely neural LLMs continue to struggle with elementary logical reasoning problems and lack the determinism, sou…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03634",
+    "title": "WebHarbor: Docking Real Websites for Evolving GUI Agent Environments",
+    "abstract": "GUI web agents require realistic and interactive environments that remain stable during both evaluation and training. Live website evaluation suffers from changing content, access restrictions, and limited coverage of authenticated workflows, while existing synthetic environments for training often lack functional depth and visual fidelity. We propose WebHarbor, a suite of 153 executable and dockerized website environments that faithfully reconstruct the visual interfaces, content, and functional workflows of real-world web services under deterministic control. We build WebHarbor through task-driven human-agent collaboration, where environments evolve as new tasks expand their functional scope, coding agents implement the required changes, and human contributors audit visual fidelity, functional correctness, and task validity. The resulting suite comprises 3,518 tasks spanning multi-step and post-authentication workflows, where existing works often fail to cover. Beyond reliable evaluation, WebHarbor provides high-fidelity synthetic web environments for cost-efficient reinforcement learning (RL). We demonstrate that a Qwen 4B-level GUI agent trained with RL in WebHarbor generalizes to unseen tasks and performs competitively with leading open-source GUI web agents across four benchmarks. The code and data are publicly available at https://github.com/aiming-lab/WebHarbor.",
+    "authors": [
+      "Zhaoyang Wang",
+      "Qianhui Wu",
+      "Boyu Gou",
+      "Demi Wang",
+      "Jiacheng Zhang",
+      "Peichun Hua",
+      "Qize Li",
+      "Shi Qiu",
+      "Yifan Jiang",
+      "Yifan Zhang",
+      "Zexu Jin",
+      "Baolin Peng",
+      "Bolin Shen",
+      "Chetan Bansal",
+      "Dehan Kong",
+      "Deren Lei",
+      "Dongshen Peng",
+      "Fengqing Jiang",
+      "Hao Cheng",
+      "Haoqing Wang",
+      "Jiaming Shan",
+      "Jicheng Wang",
+      "Jingguang Zhou",
+      "Jixuan He",
+      "Kaide Zeng",
+      "Kangyu Zhu",
+      "Lama Moukheiber",
+      "Mufan Qiu",
+      "Peng Xia",
+      "Qihan Sun",
+      "Qingwei Lin",
+      "Qiushi Sun",
+      "Ruichen Zhang",
+      "Shuqing Luo",
+      "Si Qin",
+      "Sicheng Fan",
+      "Tao Xiong",
+      "Wenlin Yao",
+      "Xinyu Zhang",
+      "Xinyue Zeng",
+      "Xuanrui Li",
+      "Xuchao Zhang",
+      "Yian Wang",
+      "Yichao Liu",
+      "Yiming Liang",
+      "Yiyang Zhou",
+      "Yizhu Jiao",
+      "Yuetai Li",
+      "Yurun Chen",
+      "Yuxuan Zhang",
+      "Zheyuan Yang",
+      "Zhiyuan Yao",
+      "Zhongyang Li",
+      "Zihao Li",
+      "Zili Wang",
+      "Jianfeng Gao",
+      "Huaxiu Yao"
+    ],
+    "published": "2026-11-02T18:57:36Z",
+    "updated": "2026-11-02T18:57:36Z",
+    "url": "https://arxiv.org/abs/2611.03634",
+    "categories": [
+      "cs.AI",
+      "cs.CL",
+      "cs.LG"
+    ],
+    "topics": [
+      "RAG"
+    ],
+    "relevance_score": 15,
+    "summary": "GUI web agents require realistic and interactive environments that remain stable during both evaluation and training. Live website evaluation suffers from changing content, access restrictions, and limited coverage of authenticated workflows, while existing synthetic environments for training often lack functional depth and visual fidelity. We prop…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03618",
+    "title": "Strategist: Evolving Reasoning with Agents",
+    "abstract": "A model is only half of an AI agent system. The other half is the inference strategy: the reasoning procedure that turns model calls into a response. Today that second half is written by hand, and the experience of building one strategy never carries to the next. We introduce Strategist, a meta-agent that evolves inference strategies across tasks. Each strategy is written as a blueprint,executable code that other strategies can reuse, and together the blueprints form a library. Given a task and a small development set, Strategist retrieves related blueprints, writes candidate strategies, tests them on real samples, and revises them from the results. Every candidate then enters the library, so later tasks build on earlier discoveries. On 30 benchmarks, Strategist beats the strongest baseline on 24 and matches its average accuracy (74.7% vs.74.0%) at 39% lower inference cost. Its strategies also transfer to unseen tasks and other models without further search. The part of an AI system that is not improved on its own now does.",
+    "authors": [
+      "Taiming Lu",
+      "Qi Xu",
+      "Zhigang Hua",
+      "Zhuang Liu"
+    ],
+    "published": "2026-11-02T18:51:04Z",
+    "updated": "2026-11-02T18:51:04Z",
+    "url": "https://arxiv.org/abs/2611.03618",
+    "categories": [
+      "cs.AI",
+      "cs.CL"
+    ],
+    "topics": [
+      "RAG",
+      "LLM",
+      "Agent"
+    ],
+    "relevance_score": 30,
+    "summary": "A model is only half of an AI agent system. The other half is the inference strategy: the reasoning procedure that turns model calls into a response. Today that second half is written by hand, and the experience of building one strategy never carries to the next. We introduce Strategist, a meta-agent that evolves inference strategies across tasks.…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03617",
+    "title": "Tracing the Scientific Discovery Capacity of LLMs to Their Training Data",
+    "abstract": "Large language models (LLMs) show growing promise for scientific discovery, yet basic questions remain about what enables reliable discovery. How can we trace the scientific discovery capacity of LLMs to their training data? We study this question as one of missing probability mass and develop a theoretical account in which monofacts-the facts observed once during training-set the discovery capacity. In materials science and regulatory genomics, we directly manipulate monofact rates in training sets and find that more monofacts consistently yield more discoveries across two open-weight model families, sampling strategies, and reasoning budgets. Further experiments show the relationship cannot be explained by training-set diversity alone and can transfer across scientific domains when paired with in-domain data. Together, our results identify monofact rate in training data as a key factor governing discoveries in language models.",
+    "authors": [
+      "Arda Uzunoglu",
+      "Mahler Revsine",
+      "Michael Schatz",
+      "Benjamin Van Durme",
+      "Mehrdad Farajtabar",
+      "Daniel Khashabi",
+      "Eric Nalisnick"
+    ],
+    "published": "2026-11-02T18:50:54Z",
+    "updated": "2026-11-02T18:50:54Z",
+    "url": "https://arxiv.org/abs/2611.03617",
+    "categories": [
+      "cs.CL",
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM"
+    ],
+    "relevance_score": 40,
+    "summary": "Large language models (LLMs) show growing promise for scientific discovery, yet basic questions remain about what enables reliable discovery. How can we trace the scientific discovery capacity of LLMs to their training data? We study this question as one of missing probability mass and develop a theoretical account in which monofacts-the facts obse…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03601",
+    "title": "DiabAgent: Toward Agentic Physiological Control",
+    "abstract": "As pretraining scales, medical language models have advanced rapidly in clinical question answering. Their ability to achieve effective physiological control through sustained intervention still lacks systematic quantitative evaluation. Type 1 diabetes provides a concrete setting: impaired insulin secretion creates dependence on exogenous insulin, with dosing continually adjusted using information about meals, exercise, illness, and glucose measurements. We introduce DiabAgent, a research suite for agentic physiological control comprising the Agentic Physiological Control (APC) framework, the DiabetSim simulator, and the SweetBench benchmark. APC controls glucose through medical-device tools, using ongoing observations to infer individual states, accumulate personal experience, and choose treatment actions. We build DiabetSim to simulate different patients, events, and device conditions for scalable virtual testing and training. Using DiabetSim, we construct SweetBench by instantiating 32 scenario designs as 212 glucose-control tasks. With Claude Opus 5.5 and a fixed decision interval of one hour, APC achieves a COGI of 73.5, compared with 71.2 for the open-source closed-loop baseline OpenAPS. Ablations further show that individual adaptation and contextual information improve glucose control. Combining high-frequency rule-based control with lower-frequency agent decisions shows potential for balancing control performance and computational cost. Our work provides a framework, simulator, and evaluation foundation for agents to participate in human physiological control.",
+    "authors": [
+      "Chengxi Li",
+      "Shaoxuan Li",
+      "Deyao Hong",
+      "Qingle Liu",
+      "Yi Huang",
+      "Puheng Bian",
+      "Minzhi Xu",
+      "Lanyue Zhang",
+      "Mingze Sun",
+      "Xin Li",
+      "Calvin Xiao",
+      "Shengyuan Wang",
+      "Huan-ang Gao",
+      "Jiazheng Xu",
+      "Kaisen Yang",
+      "Hongning Wang"
+    ],
+    "published": "2026-11-02T18:41:02Z",
+    "updated": "2026-11-02T18:41:02Z",
+    "url": "https://arxiv.org/abs/2611.03601",
+    "categories": [
+      "cs.AI",
+      "cs.CL"
+    ],
+    "topics": [
+      "LLM",
+      "Agent"
+    ],
+    "relevance_score": 25,
+    "summary": "As pretraining scales, medical language models have advanced rapidly in clinical question answering. Their ability to achieve effective physiological control through sustained intervention still lacks systematic quantitative evaluation. Type 1 diabetes provides a concrete setting: impaired insulin secretion creates dependence on exogenous insulin,…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03600",
+    "title": "Four Bridges: Measuring Deception Propensity in a Multi-Agent Game",
+    "abstract": "AI agents are increasingly deployed in settings where they interact and coordinate with other agents, yet honesty is mostly measured in single-turn, single-agent benchmarks that pressure the model to deceive. We study deception that emerges in multi-agent interaction without any instruction to deceive. We introduce Kradle, a platform for evaluating AI models, and Four Bridges, an information asymmetry game in which four agents distribute across four rooms: one is the death room, the others hold food worth more if not shared. One agent, the informed agent, knows which room is the death room and can withhold or disclose that information. We evaluate eight frontier models as the informed agent. Deceptive behavior appears in every model and in 73% of all runs (6% to 100% per model), and does not decrease with capability tier within a model family. When the informed agent does disclose, the warning is often challenged, and agents that challenge it enter the death room twice as often as those that do not. Telling all agents that one of them knows the death room collapses deception in six of eight models; telling the informed agent that the room is permanently fatal moves only one. On an open-weight model, an honesty steering vector reduces deception to 0% and adversarial honesty training to 6%. The platform and game provide a testbed for measuring deceptive behavior and comparing interventions.",
+    "authors": [
+      "Raphael Casey",
+      "Michael Simeone",
+      "Alberto Tosato",
+      "Florian Ernst",
+      "Kemal El Moujahid",
+      "James Tamplin",
+      "Tommaso Tosato"
+    ],
+    "published": "2026-11-02T18:40:47Z",
+    "updated": "2026-11-02T18:40:47Z",
+    "url": "https://arxiv.org/abs/2611.03600",
+    "categories": [
+      "cs.AI",
+      "cs.MA"
+    ],
+    "topics": [
+      "Agent"
+    ],
+    "relevance_score": 40,
+    "summary": "AI agents are increasingly deployed in settings where they interact and coordinate with other agents, yet honesty is mostly measured in single-turn, single-agent benchmarks that pressure the model to deceive. We study deception that emerges in multi-agent interaction without any instruction to deceive. We introduce Kradle, a platform for evaluating…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03586",
+    "title": "FedReady: Bounded Agents for Federation Formation",
+    "abstract": "Federated learning (FL) runtimes standardize aggregation and deployment, but each new study still requires federation formation: selecting task-eligible sites and preparing their local data and task code for federated training or analysis. This preparation recurs when the target changes, while raw records and site-private mappings are excluded from cross-site FL messages. We present FedReady, a system that performs federation formation with bounded LLM agents. Agents propose shared contracts, local adapters, and task code; the runtime owns workflow state and accepts artifacts only after checks tied to their digests. Candidate site discovery prioritizes recall; local eligibility verification checks task support before site admission. Once participating sites and artifacts are fixed, conventional federated training or analysis proceeds without readiness agents. Across 39 simulated retinal sites and four tasks, discovery reaches recall 1.00 at precision 0.65; local eligibility verification removes all 17 false positives without losing an eligible site-task pair. The participating sites supply 45,575 task-record instances and complete four 100-round jobs, including one with a runtime-generated contract. Across ten patient cohorts, preparation supports seven patient populations and holds endpoints at three sources as unsupported. Comparison with manually prepared reference populations and analysis (the manual reference) gives a maximum survival-curve difference of 0.001133. We also analyze 19 development failures, targeted classification ablations, and standalone and heterogeneous agent configurations. These results establish the feasibility of task-specific data preparation before ordinary FL training or analysis.",
+    "authors": [
+      "Ziyue Xu",
+      "Holger R. Roth",
+      "Chester Chen",
+      "Peter Cnudde"
+    ],
+    "published": "2026-11-02T18:32:43Z",
+    "updated": "2026-11-02T18:32:43Z",
+    "url": "https://arxiv.org/abs/2611.03586",
+    "categories": [
+      "cs.AI",
+      "cs.MA"
+    ],
+    "topics": [
+      "LLM"
+    ],
+    "relevance_score": 15,
+    "summary": "Federated learning (FL) runtimes standardize aggregation and deployment, but each new study still requires federation formation: selecting task-eligible sites and preparing their local data and task code for federated training or analysis. This preparation recurs when the target changes, while raw records and site-private mappings are excluded from…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03575",
+    "title": "VeriHarm-Bench: Measuring Harmful Success in LLM Coding Agents Verifiably",
+    "abstract": "Large language model (LLM) coding agents increasingly operate with shell access, allowing them to write scripts, move files, alter permissions, and modify system configurations. However, an agent may achieve a user's goal while causing unintended harm, such as deleting unrelated files, weakening access controls, or corrupting data, in response to benign inputs without explicit jailbreaking. This failure mode is particularly important because apparent task success may reassure users that an agent behaved correctly, causing harmful side effects to go unnoticed. We call this harmful success: the agent successfully completes the intended benign task while simultaneously causing unintended harm. Despite its importance, harmful success is difficult to measure because conventional task-success metrics overlook harmful behaviors, while existing safety evaluations are often designed solely to assess harmful outcomes. We introduce VeriHarm, an automatic framework for constructing programmatically verifiable benchmarks that directly measure harmful success. VeriHarm minimally perturbs coding tasks to elicit unintended harmful behavior while maintaining the benignity of the task and preserving the original task objective. It then synthesizes executable harm tests that, together with the original task-correctness tests, evaluate both task accuracy and harmful outcomes. Frontier agents, including GPT-5.6-Sol and Claude-Opus-5, achieve an average task accuracy of 95% on our curated VeriHarm-Bench, yet still struggle to complete tasks safely: their safe success rate, the fraction of tasks completed successfully without triggering the designated harm, averages only 37%. These results suggest that successful task completion can frequently coexist with unintended harm, and that task-success metrics alone may substantially understate the potential safety risks of coding agents.",
+    "authors": [
+      "Wei-Lin Chen",
+      "Zhepei Wei",
+      "Xinyu Zhu",
+      "Yu-Min Tseng",
+      "Tzu-Han Lin",
+      "Yu Meng"
+    ],
+    "published": "2026-11-02T18:27:55Z",
+    "updated": "2026-11-02T18:27:55Z",
+    "url": "https://arxiv.org/abs/2611.03575",
+    "categories": [
+      "cs.CL",
+      "cs.SE"
+    ],
+    "topics": [
+      "RAG",
+      "LLM"
+    ],
+    "relevance_score": 55,
+    "summary": "Large language model (LLM) coding agents increasingly operate with shell access, allowing them to write scripts, move files, alter permissions, and modify system configurations. However, an agent may achieve a user's goal while causing unintended harm, such as deleting unrelated files, weakening access controls, or corrupting data, in response to b…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03555",
+    "title": "MCP Tool Poisoning in Agentic AI Frameworks: A Cross-Framework Measurement Study",
+    "abstract": "The Model Context Protocol (MCP) lets agentic AI frameworks connect language models to external tool providers, but it carries attacker-controlled content (tool descriptions, schema fields, and response data) into model context without validation. Prior benchmarks measure model compliance with poisoned instructions without confirming real execution. We present the first cross-framework measurement of MCP tool poisoning with real tool execution. A 25-class root-cause taxonomy unifies prior classifications, and the open-source tool mcpvenom drives a 9,720-cell susceptibility matrix across 12 frameworks, 18 models, and 45 attack scenarios, with a dual oracle that confirms exfiltration via canary HTTP receipt. The overall attack success rate is 22.9% (2,113 vulnerable cells). Of these, 64.9% dispatch an attacker tool call, 23.0% contact the attacker endpoint, and 12.1% verifiably exfiltrate a secret. Resistance is model-level: nine core frameworks cluster within 23 to 26% (chi-squared = 3.30, p = 0.91), and no framework implements intentional defense. Incidental framework properties mitigate in specific cases, and a regex description scanner rejects 20 of 45 scenarios at a 7.2% false-positive rate, so metadata scanning alone is a partial control. Model ASR ranges from 0.4% to 49.7%. Claude Opus 4.8 is vulnerable in 8 of 530 cells while issuing 223 explicit refusals. A code-level audit finds no intentional defense across twelve frameworks, and all five coordinated disclosures across four vendors were rejected.",
+    "authors": [
+      "Farooq Shaikh",
+      "Biagio Montaruli"
+    ],
+    "published": "2026-11-02T18:17:08Z",
+    "updated": "2026-11-02T18:17:08Z",
+    "url": "https://arxiv.org/abs/2611.03555",
+    "categories": [
+      "cs.CR",
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM",
+      "Agent"
+    ],
+    "relevance_score": 25,
+    "summary": "The Model Context Protocol (MCP) lets agentic AI frameworks connect language models to external tool providers, but it carries attacker-controlled content (tool descriptions, schema fields, and response data) into model context without validation. Prior benchmarks measure model compliance with poisoned instructions without confirming real execution…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03551",
+    "title": "Can LLM Agents Be Forward-Deployed Engineers? Requirement Discovery and Delivery for Enterprise Text-to-SQL",
+    "abstract": "LLM coding agents can increasingly automate model post-training, but whether they can act as forward-deployed engineer (FDE) agents, discovering customer requirements and turning them into deployment decisions, remains unclear. We study this on a real enterprise text-to-SQL engagement: a simulated customer, grounded in the real use case's requirements, starts with an ambiguous request. An agent must discover acceptance criteria, data permissions, and hardware constraints in the discovery phase, then plan and execute a post-training recipe in the delivery phase. Across 15 models, the strongest discover over 80% of withheld requirements and open-weight models discover 40-50%; in the delivery phase, only 25% of runs across eight coding-agent configurations pass all acceptance criteria. We identify four bottlenecks in this engagement: (1) incomplete discovery, with 40% of withheld requirements missing or misrepresented; (2) unreliable execution; (3) underused compute budgets and a lack of systematic comparisons across base models and post-training methods; and (4) benchmark accuracy does not guarantee production readiness. We suggest human review of discovered requirements, monitoring of the agent's plan during execution, and an explicit experiment-environment specification covering hardware, budget scope, and production checks.",
+    "authors": [
+      "Marianne Menglin Liu",
+      "Rongguang Wang",
+      "Zheng Wang",
+      "Yewen Wang",
+      "Leonid Boytsov",
+      "Tao Sheng",
+      "Sujith Ravi",
+      "Dan Roth"
+    ],
+    "published": "2026-11-02T18:13:38Z",
+    "updated": "2026-11-02T18:13:38Z",
+    "url": "https://arxiv.org/abs/2611.03551",
+    "categories": [
+      "cs.CL",
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM"
+    ],
+    "relevance_score": 25,
+    "summary": "LLM coding agents can increasingly automate model post-training, but whether they can act as forward-deployed engineer (FDE) agents, discovering customer requirements and turning them into deployment decisions, remains unclear. We study this on a real enterprise text-to-SQL engagement: a simulated customer, grounded in the real use case's requireme…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03534",
+    "title": "An Agentic Framework for Automated Power System Studies and Grid Connection Assessment",
+    "abstract": "Connecting new generation and demand to the grid depends on two scarce skills: checking applications against a large, changing body of regulation, and running the network studies that decide where and how a project connects. We present Grid Agents, an AI system that brings both together, and the methodology we use to evaluate it. The Grid Ontology is its knowledge system. It represents the regulation, standards and engineering knowledge that grid work depends on, makes it searchable, and evolves as the agents learn from use. Every answer drawn from it rests on evidence the agents cite. Grid Studio is an agent system specialised for power-system engineering. It works in its own engineering environment with domain tools and a study framework, draws on the Grid Ontology, and relies on established solvers for every number it reports. In both, engineers make the decisions. We bring eight published power-system benchmark families, previously scattered across separate papers, into one suite of 519 tasks, and we verify not only each answer but the work behind it, by replaying the agent's tool calls. The Grid Ontology cites the right regulatory evidence more often than a general coding agent or retrieval pipelines, leads on LegalBench-RAG and ranks first on the public leaderboards of the Enterprise RAG Challenge and ViDoRe V3. Grid Studio scores highest on the 519 power-system tasks and is the fastest of all the systems we compare, both by a statistically significant margin. With an optimiser in the loop, its reinforcement packages cost 33-67% less on average than those the agent designs alone.",
+    "authors": [
+      "MaoXun Huang",
+      "Kshitij Kapoor",
+      "Eli Louise"
+    ],
+    "published": "2026-11-02T18:00:52Z",
+    "updated": "2026-11-02T18:00:52Z",
+    "url": "https://arxiv.org/abs/2611.03534",
+    "categories": [
+      "cs.AI"
+    ],
+    "topics": [
+      "RAG",
+      "Agent"
+    ],
+    "relevance_score": 40,
+    "summary": "Connecting new generation and demand to the grid depends on two scarce skills: checking applications against a large, changing body of regulation, and running the network studies that decide where and how a project connects. We present Grid Agents, an AI system that brings both together, and the methodology we use to evaluate it. The Grid Ontology…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03528",
+    "title": "Contrastive Adapter Training and Consensus Knowledge Distillation for Multi-Source-Free Domain Adaptation in Skin Cancer Diagnosis",
+    "abstract": "Skin cancer diagnosis, particularly differentiating melanoma from benign nevi, is challenging due to the visual similarity between lesions. Although convolutional neural networks (CNNs) and vision transformers (ViTs) have shown promising performance, their effectiveness often deteriorates on data from heterogeneous clinical sources. Conventional domain adaptation methods address domain shift but require access to source data during adaptation, which is often infeasible due to privacy regulations. Multi-source-free unsupervised domain adaptation (MSFDA) addresses this limitation by leveraging multiple labeled source domains to generalize to an unlabeled target domain without requiring access to source data. However, existing MSFDA methods rely on full backbone fine-tuning, leading to catastrophic forgetting and overfitting on small clinical datasets, and address domain shift at the aggregation stage without establishing a shared domain-invariant feature space. Furthermore, their reliance on hard pseudo-labels or confidence-weighted aggregation introduces noisy supervision signals under domain shift. To address these limitations, we propose CAT-CKD, consisting of two components: (1) contrastive adapter training (CAT), which trains lightweight ConvPass adapters within a frozen ViT backbone using supervised contrastive learning (SCL) to establish a shared domain-invariant feature space before source-specific model training, and (2) consensus knowledge distillation (CKD), which aggregates logits from multiple source models into a consensus supervisory signal and adapts a student model on unlabeled target data using KL divergence. Experiments on five publicly available skin lesion datasets show that CAT-CKD achieves an average AUROC of 86.1%, outperforming existing MSFDA methods while requiring only 4.3M trainable parameters. The code is available at https://github.com/A-Abedi/CAT_CKD.",
+    "authors": [
+      "Ali Abedi",
+      "Q. M. Jonathan Wu",
+      "Ning Zhang",
+      "Farhad Pourpanah"
+    ],
+    "published": "2026-11-02T17:58:16Z",
+    "updated": "2026-11-02T17:58:16Z",
+    "url": "https://arxiv.org/abs/2611.03528",
+    "categories": [
+      "cs.CV",
+      "cs.AI"
+    ],
+    "topics": [
+      "RAG"
+    ],
+    "relevance_score": 15,
+    "summary": "Skin cancer diagnosis, particularly differentiating melanoma from benign nevi, is challenging due to the visual similarity between lesions. Although convolutional neural networks (CNNs) and vision transformers (ViTs) have shown promising performance, their effectiveness often deteriorates on data from heterogeneous clinical sources. Conventional do…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03525",
+    "title": "Grading the Unannotated: Insights from the WorkRB Skill Extraction Challenge at RecSys-HR 2026",
+    "abstract": "Skill extraction benchmarks score models against a few human-annotated positives and treat every other skill in the vocabulary as equally wrong. At the scale of ESCO (13,939 skills) this binary view can reward models that rank the annotated positive high for the wrong reason, and hides semantically nonsensical predictions. The WorkRB Challenge at RecSys-HR 2026 replaces it with graded relevance: every candidate skill in a model's ranking window carries a 0 to 4 grade, and the leaderboard scores nDCG@100 against these grades. Since ternary judgements proved too coarse for objective annotation, relevance is decomposed into a cascade of four binary questions (same domain, activity mentioned, right granularity, replacement of a gold positive) that a smaller LLM judge can answer reliably; the labels are validated with blind human and frontier-model re-annotation. This paper documents the annotation methodology, the construction of five benchmark datasets (four with vacancy sentences as queries, one with lexically distant skill surface forms), the validation of the LLM cascade, and insights from the submissions. The field converged on multi-stage retrieve-and-rerank pipelines, whose gains come from clearing nonsense out of the ranking window rather than finding more positives: at the top of the leaderboard, the graded ordering is uncorrelated with what binary evaluation would have said. Graded labels expose much bigger gaps between top submissions and baselines than binary evaluation does, and show that semantic-understanding skill recommendation is still wide open. The clear next direction is bringing efficiency back: every submitted system we could size uses at least 42x, typically several hundred times, more parameters than the baselines it beats.",
+    "authors": [
+      "Warre Veys",
+      "Luis Gasco",
+      "Jens-Joris Decorte"
+    ],
+    "published": "2026-11-02T17:57:53Z",
+    "updated": "2026-11-02T17:57:53Z",
+    "url": "https://arxiv.org/abs/2611.03525",
+    "categories": [
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM"
+    ],
+    "relevance_score": 15,
+    "summary": "Skill extraction benchmarks score models against a few human-annotated positives and treat every other skill in the vocabulary as equally wrong. At the scale of ESCO (13,939 skills) this binary view can reward models that rank the annotated positive high for the wrong reason, and hides semantically nonsensical predictions. The WorkRB Challenge at R…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  },
+  {
+    "id": "2611.03520",
+    "title": "PanoTac: A Dense Three-Axis Tactile Sensor for Robust Touch-Centric Manipulation",
+    "abstract": "Contact-rich manipulation benefits from tactile feedback that captures both detailed contact geometry and interaction forces. When scooping grains, contact patterns help infer spoon orientation, while resistance transmitted through the grasp guides motion. To provide these complementary sensing capabilities, we present PanoTac, a low-cost, compliant tactile fingertip designed for dense three-axis tactile sensing. Each fingertip provides a $12 \\times 32 \\times 3$ tactile representation, with one normal ($z$) and two shear ($x$, $y$) response components at each taxel. The sensor operates at 60 Hz and costs less than $50 per fingertip. Sensor characterization quantifies response repeatability and consistency across sensor instances and contact locations. We integrate PanoTac into a robotic system with a visuo-tactile pipeline. Across test-tube preparation, grain scooping, and salt pouring, the resulting policies outperform vision-only baselines by an average of 46.7 percentage points. Ablations show that removing either spatial contact information or shear feedback reduces overall performance across the task suite. Our project page is available at https://panotac.github.io.",
+    "authors": [
+      "Binglin",
+      "Wang",
+      "Xiaole",
+      "Jiang",
+      "Zicheng Teng",
+      "Xinqi Liu",
+      "Yunzhu Li",
+      "Lerrel Pinto",
+      "Zichen Jeff Cui",
+      "Binghao Huang"
+    ],
+    "published": "2026-11-02T17:55:07Z",
+    "updated": "2026-11-02T17:55:07Z",
+    "url": "https://arxiv.org/abs/2611.03520",
+    "categories": [
+      "cs.RO",
+      "cs.AI",
+      "cs.LG"
+    ],
+    "topics": [
+      "RAG"
+    ],
+    "relevance_score": 15,
+    "summary": "Contact-rich manipulation benefits from tactile feedback that captures both detailed contact geometry and interaction forces. When scooping grains, contact patterns help infer spoon orientation, while resistance transmitted through the grasp guides motion. To provide these complementary sensing capabilities, we present PanoTac, a low-cost, complian…",
+    "summary_type": "abstract excerpt",
+    "collected_at": "2026-11-03T08:41:04.262607+00:00"
+  }
+]
