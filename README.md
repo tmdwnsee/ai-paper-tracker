@@ -31,7 +31,7 @@ python -m unittest discover -s tests -v
 | `MAX_RESULTS` | `150` | API에서 가져올 논문 최대 수 |
 | `MAX_NEW_PER_RUN` | `1` | 실행당 저장할 신규 논문 최대 수 |
 | `GEMINI_API_KEY` | 없음 | 있으면 LLM 요약 활성화 |
-| `GEMINI_MODEL` | `gemini-2.5-flash-lite` | 요약 모델 |
+| `GEMINI_MODEL` | `gemini-3.5-flash-lite` | 요약 모델 |
 | `MAX_FULLTEXT_PER_RUN` | `1` | 매 실행당 PDF 본문 한국어 요약 최대 건수 (무료 할당량 관리) |
 | `MAX_PAPER_CHUNKS` | `12` | 논문당 최대 분석 구간 수 |
 | `ARXIV_USER_AGENT` | `AIPaperTracker/1.0 (research metadata collection)` | API 요청 식별 |
