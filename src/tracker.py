@@ -15,6 +15,8 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from .fulltext import summarize_fulltext
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "papers.json"
 REPORT_DIR = ROOT / "reports"
@@ -186,17 +188,22 @@ def make_report(papers: list[dict], date: str, source_count: int) -> str:
             f"- Topics: {', '.join(paper['topics'])}",
             f"- Keyword relevance: {paper['relevance_score']}/100",
             f"- Authors: {md_safe(', '.join(paper['authors'][:8]))}",
-            f"- Summary ({paper['summary_type']}): {md_safe(paper['summary'])}",
+            f"- Summary source: {paper.get('summary_type', 'pending')}",
+            f"- PDF pages: {paper.get('pdf_pages', 'not processed')}",
+            "",
+            paper.get("summary", "한국어 본문 요약 대기 중"),
             "",
         ])
     return "\n".join(lines)
 
 
 def run(now: datetime | None = None) -> int:
+    """Collect new papers and enrich pending records with Korean PDF summaries."""
     now = now or datetime.now(timezone.utc)
     days = max(1, min(int(os.getenv("LOOKBACK_DAYS", "7")), 30))
     size = max(10, min(int(os.getenv("MAX_RESULTS", "150")), 500))
     max_new = max(1, min(int(os.getenv("MAX_NEW_PER_RUN", "15")), 50))
+    max_fulltext = max(0, min(int(os.getenv("MAX_FULLTEXT_PER_RUN", "3")), 10))
     current = read_existing(DATA_PATH)
     seen = {p["id"] for p in current}
     candidates = fetch_papers(size)
@@ -205,45 +212,64 @@ def run(now: datetime | None = None) -> int:
         if paper["id"] in seen or not is_recent(paper, now, days):
             continue
         topics, score = classify(paper)
-        if not topics or score < 15:
+        if not topics or score < 30:
             continue
         paper["topics"] = topics
         paper["relevance_score"] = score
+        paper["summary"] = "한국어 본문 요약 대기 중 (OPENAI_API_KEY 필요)"
+        paper["summary_type"] = "pending_fulltext"
+        paper["collected_at"] = now.isoformat()
         eligible.append(paper)
         seen.add(paper["id"])
         if len(eligible) >= max_new:
             break
-    if not eligible:
-        print(f"No new relevant papers among {len(candidates)} candidates; no changes.")
-        return 0
 
     key = os.getenv("OPENAI_API_KEY", "").strip()
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    for paper in eligible:
-        paper["summary"] = fallback_summary(paper["abstract"])
-        paper["summary_type"] = "abstract excerpt"
-        if key:
-            try:
-                paper["summary"] = llm_summary(paper, key, model)
-                paper["summary_type"] = f"LLM ({model})"
-            except (urllib.error.URLError, KeyError, IndexError, ValueError, TimeoutError) as exc:
-                print(f"LLM summary unavailable for {paper['id']}: {type(exc).__name__}")
-        paper["collected_at"] = now.isoformat()
-
-    # Write only after collecting/summarizing, to avoid inconsistent partial state.
     updated = current + eligible
+    summarized = []
+    if key and max_fulltext:
+        # Old abstract excerpts are eligible for backfill; process newest papers first.
+        pending = [p for p in reversed(updated)
+                   if p.get("summary_type") not in ("fulltext_llm_ko",)
+                   and p.get("id") and p.get("title")]
+        for paper in pending[:max_fulltext]:
+            try:
+                summary, pages, chunks = summarize_fulltext(paper, key, model)
+                paper["summary"] = summary
+                paper["summary_type"] = "fulltext_llm_ko"
+                paper["pdf_pages"] = pages
+                paper["text_chunks"] = chunks
+                paper.pop("summary_error", None)
+                summarized.append(paper)
+                print(f"Full-text Korean summary: {paper['id']} ({pages} pages, {chunks} chunks)")
+            except Exception as exc:
+                # Do not accidentally claim an abstract excerpt is a full-paper summary.
+                paper["summary_error"] = type(exc).__name__ + ": " + str(exc)[:160]
+                print(f"Full-text summary failed for {paper['id']}: {paper['summary_error']}")
+                # Preserve the previous summary; a failed PDF is not marked as full-text.
+
+    if not eligible and not summarized:
+        print(f"No new papers or successful summaries among {len(candidates)} candidates.")
+        return 0
+
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     date = now.astimezone(timezone(timedelta(hours=9))).date().isoformat()
-    report = make_report(eligible, date, len(candidates))
+
+    # Rebuild the daily digest from today's collected papers plus any backfilled summaries.
+    daily = [p for p in updated
+             if p.get("collected_at", "").startswith(now.date().isoformat())]
+    by_id = {p["id"]: p for p in daily + summarized}
+    report = make_report(list(by_id.values()), date, len(candidates))
     (REPORT_DIR / f"{date}.md").write_text(report, encoding="utf-8")
     (REPORT_DIR / "LATEST.md").write_text(report, encoding="utf-8")
     DATA_PATH.write_text(
         json.dumps(updated, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(f"Archived {len(eligible)} new papers on {date}.")
-    return len(eligible)
+    print(f"Archived {len(eligible)} new papers; generated {len(summarized)} full-text summaries.")
+    return len(eligible) + len(summarized)
 
 
 if __name__ == "__main__":
