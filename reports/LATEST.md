@@ -1,6 +1,6 @@
 # AI Paper Digest — 2026-11-03
 
-- Newly archived papers: **22**
+- Newly archived papers: **23**
 - arXiv candidates retrieved: **150**
 - Scores represent **keyword relevance only**, not research quality.
 - PDF-based summaries are labelled fulltext_llm_ko; other records are pending or legacy excerpts.
@@ -12,10 +12,47 @@
 - Topics: RAG
 - Keyword relevance: 15/100
 - Authors: Jason Jingzhou Liu, Tony Tao, Deepak Pathak, Ruslan Salakhutdinov
-- Summary source: abstract excerpt
-- PDF pages: not processed
+- Summary source: fulltext_llm_ko
+- PDF pages: 15
 
-Sensorized human demonstrations offer scalable data for mobile manipulation, but embodiment differences complicate policy learning. We present Pixel-UMI, a pipeline for learning environment-aware whole-body policies from human data. We first introduce Environment-Aware Retargeting (EAR), which combines reconstructed scene geometry with demonstrated…
+제공된 논문 텍스트 내용을 바탕으로 작성한 구체적인 Markdown 요약입니다.
+
+---
+
+## 연구 목적
+* 모바일 매니퓰레이션(mobile manipulation)에서 널리 쓰이는 센서화된 인간 시연 데이터 수집 방법은 운전자가 많은 자유도를 조율해야 하고 환경마다 로봇을 배치해야 하는 어려움이 있음 [p.1].
+* 인간과 로봇 간의 운동학적/신체적 차이(kinematic differences)로 인해 잔여 포즈 오차가 발생하며, 이로 인해 인간 시연과 로봇 관측 사이에 시점 불일치(viewpoint mismatch)가 발생함 [p.1, p.2].
+* 힘/촉각 센서가 없는 센서화된 인간 데이터 수집은 상호작용 힘을 기록하지 못하므로, 상태 기반 UMI 감독만으로는 접촉이 많은(contact-rich) 조작 작업을 수행하기 어려움 [p.2].
+
+## 핵심 아이디어 및 방법
+* **Pixel-UMI 파이프라인**: 센서화된 인간 시연으로부터 환경 인식형(environment-aware) 전신 정책을 학습하는 파이프라인 [p.1].
+* **EAR (Environment-Aware Retargeting)**: 
+  * 에피소드의 깊이 시퀀스로부터 정적 장면 기하학 구조를 재구성하고, 동적 객체를 분리함 [p.2].
+  * 환경 인식형 기하학적 패브릭을 사용하여 시연된 동작을 오프라인에서 재타겟팅함으로써 본체 관절 경로 및 베이스 명령을 생성하고 충돌을 회피하도록 로봇 자세를 해결함 [p.2].
+  * 실제 로봇의 응답 지연을 보정하기 위해 캘리브레이션된 관절 추적 지연을 사용해 슈도 액션(pseudo-action)을 할당함 [p.3, p.5].
+* **REAM (Retargeting-Error-Aware Masking)**: 
+  * 재타겟팅 포즈 오차를 백분위수 기반의 시각적 불일치 기하학적 대용물로 사용하여 카메라 마스킹에 활용함 [p.2, p.6].
+  * 오차가 더 높은 뷰는 훈련 중 토큰이 제외될 가능성을 높여, 로봇이 정확히 재현하기 어려운 카메라 뷰에 대한 의존도를 줄임 [p.1, p.2].
+* **온정책 교정 (On-Policy Correction via DAgger)**: 
+  * 접촉이 많은 작업에서의 성능을 향상시키기 위해 DAgger를 통한 온정책 인간 교정 데이터를 수집함 [p.1, p.2].
+  * 정책은 사전 학습된 DINOv3 ViT-B/16 시각적 백본과 플로우 매칭 액션 디코더를 사용함 [p.7].
+
+## 실험 및 주요 결과
+* 총 5가지 도전적인 모바일 매니퓰레이션 과제(Arrange Mouse, Pack Tennis Canister, Fold Box, Hang Jacket, Retrieve Drink 등)를 대상으로 평가함 [p.1, p.3, p.7, p.11].
+* 5개 작업에서 평균 **87.0%**의 평균 작업 진척도(average task progress)를 달성함 [p.13].
+* 접촉이 많은 작업의 경우, 온폴리시 보정(DAgger)을 두 차례 거치면서 평균 작업 진척도가 **6.82%에서 79.77%**로 크게 증가함 [p.13].
+* 손목 전용 조건은 *Arrange Mouse*에서 20%의 태스크 진행률을 기록한 반면, 모든 카메라를 사용하는 EAR 전용은 82.5%를 기록함 [p.11]. 보정(calibration)은 평균 태스크 진행률을 24.05% 포인트 증가시킴 [p.11].
+
+## 한계 및 주의점
+* **지연 보정된 행동 할당의 한계**: 대략적인 명령어 레이블은 제공하지만 시연된 동작의 기저에 있는 접촉 의존적 행동(contact-dependent actions)을 복원할 수 없음 [p.13].
+* **재대상화 품질의 한계**: 단일 헤드 장착 깊이 카메라를 사용한 재구성은 가려지거나 관측되지 않은 표면을 불완전하게 남기며, 정적 장면 공식화는 움직이는 장애물을 처리하는 데 한계를 둠 [p.13].
+
+## AI 엔지니어 관점에서 볼 점
+* 인간 시연과 로봇의 물리적 차이(운동학적 격차 및 시점 불일치)가 모방 학습의 전이 성능을 떨어뜨릴 수 있으므로, EAR(환경 인지 리타겟팅)과 REAM(오차 인지 마스킹) 같은 기하학적 후처리 및 가시성 제어 기법이 실물 로봇 배포 시 매우 유효하다는 점을 보여줌 [p.1, p.2, p.3].
+* 순수 시연 데이터 학습의 한계(접촉 중심 작업의 정체)를 극복하기 위해 DAgger 기반의 온정책 보정(on-policy correction)을 결합하는 파이프라인 설계가 복잡한 조작 작업 성공률 향상에 핵심적임을 시사함 [p.1, p.6, p.13].
+
+---
+*핵심 정리:* Pixel-UMI는 센서화된 인간 시연의 환경 인식형 리타겟팅, 오차 인지 카메라 마스킹, 그리고 온정책 보정(DAgger)을 결합하여 인간-로봇 간의 신체 및 시점 격차를 극복하고 고도화된 전신 모바일 조작 정책을 학습하는 파이프라인이다 [p.1, p.2].
 
 ## 2. From Natural Language to Exact Cover: A Neuro-Symbolic Approach to Zebra Puzzles
 
@@ -264,6 +301,18 @@ Contact-rich manipulation benefits from tactile feedback that captures both deta
 - Topics: LLM
 - Keyword relevance: 40/100
 - Authors: Jinlei Zhang, Zixuan Zhang, Hao Qiu, Feng Chen, Jiateng Yin, Xiaoyong Yan, Xiaolei Ma, Hao Sun
+- Summary source: pending_fulltext
+- PDF pages: not processed
+
+한국어 본문 요약 대기 중 (GEMINI_API_KEY 필요)
+
+## 23. Predictive Safety Guardrails Do Not Always Make LLM Agents Safer
+
+- arXiv: https://arxiv.org/abs/2611.02815
+- Published (UTC): 2026-11-02T09:19:22Z
+- Topics: LLM
+- Keyword relevance: 40/100
+- Authors: Weixiang Zhao, Zhihao Liu, Guancheng Li, Yanyan Zhao, Bing Qin, Ting Liu
 - Summary source: pending_fulltext
 - PDF pages: not processed
 
