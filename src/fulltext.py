@@ -1,12 +1,12 @@
 """Download arXiv PDFs and make source-grounded Korean summaries of the full paper."""
 from __future__ import annotations
 
-import io
 import json
 import os
 import re
 import time
 import urllib.request
+import urllib.error
 
 MAX_PDF_BYTES = 18 * 1024 * 1024
 CHARS_PER_CHUNK = 11000
@@ -22,11 +22,14 @@ def download_text(paper_id: str) -> tuple[list[str], int]:
         "https://arxiv.org/pdf/" + paper_id,
         headers={"User-Agent": "AIPaperTracker/1.1 (non-commercial research digest)"},
     )
-    with urllib.request.urlopen(req, timeout=70) as response:
-        length = int(response.headers.get("Content-Length") or 0)
-        if length > MAX_PDF_BYTES:
-            raise ValueError("PDF larger than configured size limit")
-        payload = response.read(MAX_PDF_BYTES + 1)
+    try:
+        with urllib.request.urlopen(req, timeout=70) as response:
+            length = int(response.headers.get("Content-Length") or 0)
+            if length > MAX_PDF_BYTES:
+                raise ValueError("PDF larger than configured size limit")
+            payload = response.read(MAX_PDF_BYTES + 1)
+    except urllib.error.HTTPError as exc:
+        raise RuntimeError(f"arXiv PDF download HTTP {exc.code}; check access/rate limits") from exc
     if len(payload) > MAX_PDF_BYTES or not payload.startswith(b"%PDF"):
         raise ValueError("PDF unavailable or oversized")
     pages = []
@@ -82,8 +85,14 @@ def chat(prompt: str, key: str, model: str, max_tokens: int) -> str:
             "User-Agent": "AIPaperTracker/1.1",
         },
     )
-    with urllib.request.urlopen(req, timeout=100) as response:
-        obj = json.load(response)
+    try:
+        with urllib.request.urlopen(req, timeout=100) as response:
+            obj = json.load(response)
+    except urllib.error.HTTPError as exc:
+        # Log only service + status and error TYPE; never log request headers or API keys.
+        if exc.code == 429:
+            raise RuntimeError("OpenAI API HTTP 429; check billing, credits, and rate limits") from exc
+        raise RuntimeError(f"OpenAI API HTTP {exc.code}") from exc
     content = obj["choices"][0]["message"]["content"]
     if not content or not content.strip():
         raise ValueError("Empty LLM response")
