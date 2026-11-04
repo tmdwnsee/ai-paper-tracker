@@ -6,7 +6,7 @@ arXiv에서 **RAG, LLM, AI Agent** 관련 신규 논문을 수집하고, 중복 
 
 `arXiv API → 신규 논문 식별 → PDF 다운로드 → 페이지별 텍스트 추출 → 구간별 한국어 메모 → 종합 한국어 요약 → JSON / Markdown → GitHub Actions 커밋`
 
-- **자동 실행**: 매일 **오전 9시, Asia/Seoul** (GitHub Actions 예약 실행)
+- **자동 실행**: 매일 **오전 9시 7분, Asia/Seoul** (GitHub Actions 예약 실행)
 - **신규 논문이 없으면 파일을 수정하지 않습니다.** 의미 없는 커밋을 만들지 않습니다.
 - **중복 기준**: arXiv 논문 ID (버전 번호 제외)
 - **본문 요약**: `GEMINI_API_KEY`가 있어야 PDF 본문을 구간별로 분석하고 한국어로 요약합니다. 키가 없으면 신규 논문만 수집하고 요약은 대기 상태로 둡니다. 기존 초록 발췌 기록도 요약 대상으로 다시 처리합니다.
@@ -42,7 +42,7 @@ python -m unittest discover -s tests -v
 2. GitHub 저장소의 **Settings → Actions → General → Workflow permissions**에서 `Read and write permissions` 허용 여부를 확인합니다. 워크플로에 `contents: write`도 선언되어 있습니다.
 3. 선택: **Settings → Secrets and variables → Actions → New repository secret**에서 `GEMINI_API_KEY`를 추가합니다. Google AI Studio 무료 등급에서 사용할 키를 등록하세요. 무료 할당량을 넘기면 요약은 중단됩니다. 유료 결제를 활성화하면 요금이 발생할 수 있습니다. 비밀키를 파일에 넣거나 커밋하지 마세요.
 4. **Actions → Daily AI Paper Tracker → Run workflow**로 수동 실행 후 결과 확인.
-5. 이후 `Asia/Seoul` 오전 9시에 예약 실행됩니다. GitHub 예약 작업은 지연·누락될 수 있으며, 장기간 활동이 없는 공개 저장소에서는 비활성화될 수 있습니다.
+5. 이후 `Asia/Seoul` 오전 9시 7분에 예약 실행됩니다. GitHub 예약 작업은 지연·누락될 수 있으며, 장기간 활동이 없는 공개 저장소에서는 비활성화될 수 있습니다.
 
 ### GitHub 잔디 관련
 
