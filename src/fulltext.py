@@ -94,15 +94,31 @@ def chat(prompt: str, key: str, model: str, max_tokens: int) -> str:
             "User-Agent": "AIPaperTracker/1.2",
         },
     )
-    try:
-        with urllib.request.urlopen(req, timeout=100) as response:
-            obj = json.load(response)
-    except urllib.error.HTTPError as exc:
-        if exc.code == 429:
-            raise RuntimeError("Gemini API quota exceeded (HTTP 429); free-tier limit reached") from exc
-        if exc.code in (401, 403):
-            raise RuntimeError("Gemini API key invalid or API access denied (HTTP " + str(exc.code) + ")") from exc
-        raise RuntimeError(f"Gemini API HTTP {exc.code}") from exc
+    # Retry brief service disruptions without wasting the free quota.
+    # Exponential wait is capped; authentication and quota errors are not retried.
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=100) as response:
+                obj = json.load(response)
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429:
+                raise RuntimeError("Gemini API quota exceeded (HTTP 429); free-tier limit reached") from exc
+            if exc.code in (401, 403):
+                raise RuntimeError("Gemini API key invalid or API access denied (HTTP " + str(exc.code) + ")") from exc
+            if exc.code in (500, 502, 503, 504) and attempt < 2:
+                delay = (4, 12)[attempt]
+                print(f"Gemini API HTTP {exc.code}: retry {attempt + 1}/2 after {delay}s")
+                time.sleep(delay)
+                continue
+            raise RuntimeError(f"Gemini API HTTP {exc.code}") from exc
+        except (TimeoutError, urllib.error.URLError) as exc:
+            if attempt < 2:
+                delay = (4, 12)[attempt]
+                print(f"Gemini connection issue: retry {attempt + 1}/2 after {delay}s")
+                time.sleep(delay)
+                continue
+            raise RuntimeError("Gemini API network request failed") from exc
     try:
         candidate = obj["candidates"][0]
         content = "\n".join(
