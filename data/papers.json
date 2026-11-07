@@ -57,5 +57,31 @@
     "pdf_pages": 25,
     "text_chunks": 10,
     "collected_at": "2026-11-04T01:02:42.408786+00:00"
+  },
+  {
+    "id": "2611.08428",
+    "title": "The Power of Meta Access in the Software of the Future --- Demonstrated on LLM Chat UIs and Chat AI",
+    "abstract": "Chat remains the default surface for many large language model (LLM) tasks, even as agentic tools such as OpenCode excel at coding and automation. Yet the model sees the current dialogue but not the workspace around it. We explore meta access---giving the assistant a structured, permissioned view of the interface itself and propose a ladder of levels: feature tutoring; metadata, settings, and preference access; retrieval over summaries and messages, confirmed mutation, and full orchestration. Meta access can turn a chat client from many screens into one entry point for finding, navigating, organising, and operating it, while raising risks around grounding, privacy, prompt injection, and trust. General-purpose agentic harnesses are runtimes; because they can change their own settings, meta access becomes reflexive and needs a separate control-plane boundary. We ground this in the Meta Chat prototype of the Chat AI client. It builds bounded context from, e.g., summaries, settings, and relevant messages; links references to conversations, topics, and personas; supports confirmed, reversible changes; offers a browsable tutorial library; and recommends personas as user-started conversations. By exposing application state in structured form, meta access can extend screen readers from widget descriptions to semantic workspace operations. Meta access thus turns chat from a window onto one conversation into a control layer for the whole workspace, extending chat toward agentic capability without surrendering user control. As assistants become embedded in IDEs, dashboards, office suites, and operating systems, AI-era interfaces should expose a structured, permissioned model of their state and capabilities, ideally by opening their existing metamodels through a debugger-like interface.",
+    "authors": [
+      "Julian Kunkel",
+      "Ali Doosthosseini"
+    ],
+    "published": "2026-11-05T18:22:24Z",
+    "updated": "2026-11-05T18:22:24Z",
+    "url": "https://arxiv.org/abs/2611.08428",
+    "categories": [
+      "cs.AI"
+    ],
+    "topics": [
+      "RAG",
+      "LLM",
+      "Agent"
+    ],
+    "relevance_score": 55,
+    "summary": "제공된 논문 메모 전체를 바탕으로 작성한 구체적인 한국어 요약은 다음과 같습니다.\n\n---\n\n## 연구 목적\n* **LLM 채팅 인터페이스의 비대칭성 극복:** LLM 채팅 인터페이스는 일상적인 태스크의 기본 표면으로 자리 잡았으나, 모델은 현재 대화 내용만 볼 수 있고 그 주변의 작업 공간(workspace)은 보지 못하는 비대칭성 문제가 존재함 [p.1, p.2].\n* **관계형 및 절차적 질문의 한계 해결:** 사용자의 이력이 늘어날수록 인터페이스 탐색(과거 결정 찾기, 주제 기억, 드문 기능 학습 등)이 어려워지며, 전통적인 검색은 \"음식 주문 채팅은 어디에 있나요?\", \"파일을 어떻게 첨부하나요?\"와 같은 관계형·절차적 질문에 한계가 있음 [p.2]. 이에 따라 응용 프로그램 자체의 상태와 기능을 추론할 수 있는 '메타 접근(Meta Access)'의 필요성을 다룸 [p.1, p.2].\n\n## 핵심 아이디어 및 방법\n* **메타 접근(Meta Access) 개념:** 어시스턴트에게 인터페이스 자체에 대한 구조화되고 권한이 부여된 뷰(view)를 제공하여 대화 주제뿐만 아니라 응용 프로그램의 상태와 기능(채팅, 주제, 메모, 기능, 환경설정 등)을 추론할 수 있도록 함 [p.1, p.2].\n* **메타 접근의 사다리 (Ladder of Meta Access):** \n  * *레벨 0:* 메타 접근 없음 [p.13]\n  * *레벨 1:* 기능 튜터링 (인터페이스 설명 및 튜토리얼 실행) [p.1, p.13]\n  * *레벨 2:* 메타데이터, 설정 및 선호도 접근 (대화 식별자, 제목, 토픽, 최신성, 설정 값, 페르소나 및 내비게이션) [p.1, p.8, p.13]\n  * *레벨 3:* 요약 및 메시지 검색 (로컬 어휘 검색을 통한 선택적 메시지 발췌 및 인용) [p.1, p.5, p.13]\n  * *레벨 4:* 확인된 변형(confirmed mutation) (채팅 이름 변경, 설정 편집 등 UI에서 '제안' 카드로 표시 후 사용자 동의 시 적용 및 가역성 보장) [p.1, p.11, p.13]\n  * *레벨 5:* 완전한 오케스트레이션 (여러 작업을 하나의 확인 단계로 구성) [p.1, p.16]\n* **메타챗 (Meta Chat) 프로토타입:** 채팅 인터페이스 안에서 요약·설정·관련 메시지 컨텍스트를 구축하고, 내부 링크로 근거(grounding)를 제시하며, 확인 및 가역적 변경과 탐색 가능한 튜토리얼 라이브러리를 제공하도록 구현됨 [p.1, p.8].\n* **가드레일 계약 및 타입화된 기능 모델:** 검색된 콘텐츠를 지시사항이 아닌 '데이터'로 취급하고, 증거 소스, 허용 범위, 요구되는 확인 절차 등을 정의하는 증거 및 권한 계약(Evidence and Authority Contracts)을 도입함 [p.6, p.19].\n\n## 실험 및 주요 결과\n* **정량적 결과:** 본문은 포지션 및 구현 소개 논문으로, 구체적인 벤치마크 점수나 정량적 비교 결과는 **본문에서 확인되지 않음** [p.1].\n* **프로토타입 검증:** 메타챗 프로토타입을 통해 레벨 1~3 및 레벨 4의 상당 부분이 구현 가능하며, 어시스턴트가 기능 튜터링, 메타데이터 검색, 메시지 인용, 페르소나 추천 및 확인된 변경 작업을 수행할 수 있음을 시연함 [p.8, p.24].\n* **참고된 관련 벤치마크 (메모 언급 기준):** 웹/GUI 및 에이전트/메모리 관련 환경으로 WebGPT, Mind2Web, WebArena, OSWorld, LongMemEval, MemoryAgentBench, AgentDojo 등이 언급됨 [p.4, p.5].\n\n## 한계 및 주의점\n* **보안 및 신뢰성 위험:** 접지(grounding), 프라이버시, 프롬프트 인젝션(특히 간접 프롬프트 인젝션이 모델 행동을 리디렉션하는 문제) 등의 보안 경계 위협이 존재함 [p.1, p.5].\n* **환각 및 최신성 문제:** 작업 공간 사실 환각(개인 데이터 질문 시 제목이나 주제를 지어내는 현상)과 요약 손실 및 최신성 저하(압축된 요약이 편집 내용보다 뒤처지는 문제)가 발생할 수 있음 [p.21].\n* **기타 리스크:** 자동화 편향(사용자가 인터페이스 학습을 멈추고 답변을 과도하게 신뢰함), 반사적 설정 및 자기 에스컬레이션(범용 하니스가 자체 권한을 지속적으로 변경하는 문제), 표준화 및 평가 벤치마크의 부재 등이 한계로 지적됨 [p.22].\n\n## AI 엔지니어 관점에서 볼 점\n* **도구와 권한의 분리 및 '제안-검증-커밋' 패턴:** 에이전트가 시스템 설정을 직접 변경(Mutating actions)하게 두는 대신, 클라이언트가 검증한 협소한 범위의 '제안(Proposal)' 카드로 노출하고 사용자의 명시적 수락과 가역적(Reversible) 조치를 강제하는 아키텍처 패턴을 채택해야 함 [p.5, p.11, p.15].\n* **신뢰할 수 없는 콘텐츠와 지시사항의 분리:** 검색된 워크스페이스 텍스트나 사용자 데이터는 LLM에게 '지시사항(Instruction)'이 아니라 엄격히 '데이터(Data)'로 다루어져야 하며, 명시적인 증거 및 권한 계약(Evidence and Authority Contracts)을 통해 에이전트의 출력 범위를 통제해야 함 [p.6, p.19].\n\n---\n\n**한 줄 핵심 정리:** 본 논문은 LLM 채팅 인터페이스가 애플리케이션 자체의 상태와 기능을 안전하게 탐색하고 제어할 수 있도록 돕는 구조화된 '메타 접근(Meta Access)' 아키텍처와 단계별 사다리 모델을 제안한다 [p.1, p.12].",
+    "summary_type": "fulltext_llm_ko",
+    "pdf_pages": 28,
+    "text_chunks": 9,
+    "collected_at": "2026-11-07T05:47:19.700146+00:00"
   }
 ]
