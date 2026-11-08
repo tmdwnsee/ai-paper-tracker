@@ -83,5 +83,31 @@
     "pdf_pages": 28,
     "text_chunks": 9,
     "collected_at": "2026-11-07T05:47:19.700146+00:00"
+  },
+  {
+    "id": "2611.08383",
+    "title": "FedReason: Large Language Models as Weight-Space Meta-Aggregators for Heterogeneous Federated Learning",
+    "abstract": "Federated learning servers combine client models with a fixed aggregation rule, and each rule in common use is designed for one kind of heterogeneity. We study whether a large language model (LLM) that inspects the client models can choose the rule itself, without any training on the server. In FedReason, the LLM is called every ten rounds. It analyses the weights by running code in a restricted server-side sandbox, sees only the printed results, may score a few candidates on a 500-image proxy set, and submits a short Python aggregation program. The server applies the program until the next call and falls back to FedAvg whenever its output is invalid. Full weight tensors never leave the server. We evaluated FedReason with Claude Opus 5.5 on CIFAR-10 and CIFAR-100 with ResNet-18 under Dirichlet label skew, width-heterogeneous sub-models and Byzantine clients, in 168 runs against 14 baselines. Across 12 paired label-skew runs it beat FedAvg by 1.26 percentage points on average (10 wins), and a control that spends the same per-round proxy budget on choosing among standard rules by 1.08 points. It was the strongest server-side rule on CIFAR-100 but did not beat SCAFFOLD, which changes client training. With three of ten clients malicious, it excluded all sign-flipping clients from the first round and stayed about one point below FLTrust without training a root model. Without proxy feedback, accuracy fell from 73.8% to 38.8% in one seed. A 60-round run cost 0.79 USD in API fees on average.",
+    "authors": [
+      "Ali Mohammadi Ruzbahani",
+      "Abbas Yazdinejad",
+      "Hadis Karimipour"
+    ],
+    "published": "2026-11-05T18:00:58Z",
+    "updated": "2026-11-05T18:00:58Z",
+    "url": "https://arxiv.org/abs/2611.08383",
+    "categories": [
+      "cs.CR",
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM"
+    ],
+    "relevance_score": 30,
+    "summary": "제공된 논문 메모 내용을 바탕으로 작성한 구체적인 Markdown 요약입니다.\n\n---\n\n## 연구 목적\n* 기존 연합 학습(FL) 서버는 단 한 가지 이질성(heterogeneity)만을 위해 설계된 고정된 집계 규칙을 사용하므로 배포 환경에 어떤 가정이 적용될지 미리 알기 어렵다는 문제를 다룸 [p.1].\n* 서버가 클라이언트 모델들을 직접 검사하는 대형 언어 모델(LLM)을 활용하여, 서버 측 학습 없이 스스로 가중치 공간 메타-집계(weight-space meta-aggregation) 규칙을 선택하거나 작성할 수 있는지 연구함 [p.1].\n\n## 핵심 아이디어 및 방법\n* **제안 기법 (FedReason)**: 서버가 훈련을 수행하지 않으며, LLM이 관찰된 클라이언트 모델들을 기반으로 파이썬 집계 프로그램(`aggregate(ctx)`)을 작성하여 가중치 공간 메타-집계를 수행함 [p.1, p.2].\n* **작동 방식**: \n  * 10라운드마다 한 번씩 LLM이 호출됨 ($T=10$) [p.1].\n  * 서버 측 제한된 샌드박스 환경에서 파이썬 코드를 실행하여 가중치를 분석하고, 500장의 이미지로 구성된 프록시 셋(proxy set)에서 소수의 후보를 평가함 [p.1].\n  * LLM이 제출한 파이썬 집계 프로그램을 서버가 다음 호출 전까지 매 라운드 적용함 [p.1].\n* **안전장치 및 제약**:\n  * 프로그램 출력이나 형식이 유효하지 않은 경우 서버는 `FedAvg`로 폴백(fallback)하여 훈련 중단을 방지함 [p.1, p.6].\n  * 원본 가중치 텐서는 서버 외부로 유출되지 않으며, 프롬프트, 브리프, 잘린 코드 출력 등이 LLM 제공자에게 전달됨 [p.1, p.7].\n  * 60라운드 실행 시 평균 6회의 LLM 호출이 발생하며, 각 결정은 LLM의 근거와 함께 코드로 저장되어 사후 감사가 가능함 [p.2, p.7].\n  * 사용된 LLM 모델: 적응형 사고와 중간 추론 노력 설정의 **Claude Opus 5.5** (`claude-opus-5-5`) [p.8].\n\n## 실험 및 주요 결과\n* **실험 규모**: ResNet-18 및 CIFAR-10/CIFAR-100 환경에서 14개의 베이스라인을 상대로 총 168회의 실험을 수행함 [p.1, p.2].\n* **레이블 편향(Label-skew) 성능**: \n  * 12회의 페어드 레이블 스큐 실험 중 10번 승리하였으며, `FedAvg` 대비 평균 1.26 퍼센트 포인트(pp) 높은 성능을 기록함 [p.1].\n  * 동일한 프록시 예산을 사용하는 제어군(ProxySel) 대비 평균 1.08 pp 높음 [p.1].\n  * Table 2 (최종 테스트 정확도 %) 기준, CIFAR-10 및 CIFAR-100 전반의 평균 정확도에서 `FedReason`은 71.07%를 기록하여 `ProxySel`(69.99%), `FedAvg`(69.81%) 등을 상회함 (단, 클라이언트 훈련 방식을 바꾸는 `SCAFFOLD`는 72.31%로 더 높음) [p.9].\n* **비잔틴 공격 환경 성능** (CIFAR-10, $\\alpha = 0.5$, 10개 중 3개 악성 클라이언트, Table 4 기준):\n  * Sign-flipping 공격 환경에서 `FedReason`은 84.94%를 기록하여 `FLTrust`(86.20%)에 근접하며 `FedAvg`(78.93%) 및 `ProxySel`(80.47%)보다 우수한 성능을 보임 [p.12].\n  * Label-flipping 공격 환경에서도 `FLTrust`(85.95%)와 유사한 85.24%의 정확도를 기록함 [p.12].\n* **Ablation 결과** (CIFAR-10, $\\alpha = 0.1$, Table 5 기준):\n  * 프록시 피드백을 제거할 경우 정확도가 38.84%로 폭락(-35.00 pp)하며, 가중치 정보를 제공하지 않을 경우 67.86%(-5.98 pp)로 하락함 [p.14].\n* **비용 및 시간**: 60라운드 기준 실행당 평균 0.79 USD의 API 비용이 소요되며, 라운드당 약 1.6초의 추가 시간이 소요됨 [p.16].\n\n## 한계 및 주의점\n* **확장성 한계**: 부분 참여가 있는 대규모 클라이언트 집단, 더 큰 모델, 다른 모달리티에서는 장단점이 달라질 수 있으며, 수천 명의 클라이언트가 참여할 경우 샌드박스가 모든 모델을 직접 노출할 수 없어 스케치나 클러스터 요약에 의존해야 함 [p.17].\n* **체제 변화 미검증**: 훈련 중 체제 변화(change of regime)가 없는 설정에서 실험이 진행되어, 상황 변화에 따라 프로그램이 적절히 대응할 수 있는지는 검증되지 않음 [p.16].\n* **신뢰 모델 제약**: 개별 모델을 서버가 수신하므로 안전한 집단화(secure aggregation)와 결합할 수 없으며, LLM 제공자가 새로운 신뢰 주체(정직하지만 호기심 많은 서버 가정)로 추가됨 [p.7].\n\n## AI 엔지니어 관점에서 볼 점\n* 서버 측에 LLM 기반의 샌드박스 실행 환경을 도입하여 고정된 수식 대신 동적인 파이썬 집계 코드를 생성·적용하는 아키텍처는 이질적(heterogeneous)이거나 악의적인 연합 학습 환경에서 유연성을 크게 높일 수 있는 실용적인 접근입니다 [p.1, p.3].\n* 단, 프록시 셋 피드백과 가중치 분석 정보가 누락될 경우 성능이 급격히 저하되므로(각각 -35 pp, -6 pp 하락), LLM에게 제공되는 컨텍스트 설계와 안전장치(`FedAvg` 폴백, 샌드박스 보안 인터프리터 등)의 구현이 시스템 안정성을 좌우하는 핵심 요소임을 확인할 수 있습니다 [p.6, p.14, p.17].\n\n---\n*한 줄 핵심 정리: FedReason은 서버에서 학습을 수행하지 않고 대형 언어 모델이 프록시 평가와 가중치 공간 정보를 바탕으로 동적 집계 코드를 작성하게 함으로써, 이질적이거나 공격적인 연합 학습 환경에서 기존 고정 규칙들보다 뛰어난 적응력과 성능을 보여준다 [p.1, p.3, p.12].*",
+    "summary_type": "fulltext_llm_ko",
+    "pdf_pages": 21,
+    "text_chunks": 9,
+    "collected_at": "2026-11-08T05:50:45.985597+00:00"
   }
 ]
