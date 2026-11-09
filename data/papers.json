@@ -109,5 +109,33 @@
     "pdf_pages": 21,
     "text_chunks": 9,
     "collected_at": "2026-11-08T05:50:45.985597+00:00"
+  },
+  {
+    "id": "2611.09891",
+    "title": "CPU-ARC: Agentic Reasoning Caching for on-CPU Reasoning Reuse",
+    "abstract": "Large language models reinvent the wheel all the time. They conflate task-solving with the execution of the solutions, which forces them to solve every problem from scratch. We show that once a task has been reasoned through, the application of its solution to a new problem instance can be done very efficiently and with little involvement from language models. We introduce agentic reasoning caching, a method for constructing robust CPU-executable agentic reasoning caches (ARCs) from LLM reasoning traces. ARCs show on-par performance with frontier LLMs across a range of difficult mathematical and scientific tasks, are fully explainable, continually trainable, robust to input perturbations, and 16-291x cheaper to invoke than the source model.",
+    "authors": [
+      "Peter Belcak",
+      "Greg Heinrich",
+      "Saurav Muralidharan",
+      "Shizhe Diao",
+      "Pavlo Molchanov"
+    ],
+    "published": "2026-11-06T18:58:50Z",
+    "updated": "2026-11-06T18:58:50Z",
+    "url": "https://arxiv.org/abs/2611.09891",
+    "categories": [
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM",
+      "Agent"
+    ],
+    "relevance_score": 40,
+    "summary": "제공된 논문 메모 전체를 바탕으로 작성한 구체적인 Markdown 요약입니다. 모든 내용은 제공된 소스 텍스트에만 근거하며, 없는 내용은 추가하지 않았습니다.\n\n---\n\n## 연구 목적\n* 대형 언어 모델(LLM)이 동일한 지시사항과 계획을 가졌으나 페이로드만 다른 반복적인 쿼리를 처리할 때 매번 처음부터 추론을 수행하여 발생하는 상당한 중복 작업을 줄이고자 함 [p.1].\n* 에이전트 시스템에서 동일한 프롬프트와 가변 페이로드가 반복될 때, 클라우드 LLM 요청 전 캐시를 활용해 지연 시간과 비용을 대폭 절감 [p.3].\n* 가장 어려운 사례인 고난도 수학 및 과학 벤치마크에서, 소형 언어 모델(SLM)과 CPU 실행만 사용하는 **CPU-ARC(Agentic Reasoning Caching)**가 프론티어 수준 모델과 동등한 성능을 낼 수 있는지 테스트함 [p.1, p.3].\n\n## 핵심 아이디어 및 방법\n* **해결책 탐색과 실행의 분리 (O1, O2):** 일단 특정 문제에 대한 추론이 완료되면, 실행은 LLM 개입을 최소화한 채 효율적으로 수행될 수 있으며 많은 추론 부분이 확장되는 문제 집합에 재사용될 수 있음 [p.1, p.2].\n* **에이전틱 추론 캐싱 (ARC) 구조:** LLM 대화 기록의 로직을 개별 재사용 가능한 모듈 네트워크인 **시맨틱 함수(semantic functions)**로 분해하고 코드로 저장 [p.2, p.3].\n* **핵심 구성 요소 및 프리미티브:** \n  * 런타임 프리미티브로 `load`, `do`, `narrate`, `extract`, `lm`, `convert`, `invoke_tool` 등을 사용 [p.4, p.5, p.15].\n  * CPU 기반 벡터 스토어(FAISS flat index 등)를 활용하는 `Context` 메모리 레이어 스택 유지 [p.5, p.11].\n* **캐시 구축 5단계:** (1) 입력-출력 고립, (2) 분해, (3) 매개변수 인식, (4) 계획, (5) 구현 [p.5-6].\n* **컴파일 (Compilation):** 성숙한 캐시의 경우 동적 룩업과 `do()` 디스패치를 정적 파이썬 함수 호출로 변환하여, 임베딩 엔진 없이 $O(1)$로 실행되는 독립형 파이썬 모듈 생성 [p.7-8].\n* **타겟 모델 $\\mathcal{T}$ 생성 3단계 파이프라인:** (1) 호출 로그 수집, (2) 합성 데이터 증강 ($\\mathcal{S}$를 통한 10배 확장), (3) Llama 3.2 1B 모델을 활용한 지도학습 미세조정(SFT) [p.27].\n\n## 실험 및 주요 결과\n* **데이터셋 / 벤치마크:** MATH-500, AIME 2024·2025·2026, GPQA Diamond, GSM8K, MMLU-Pro, SciBench [p.10, p.14].\n* **정확도 (Correctness):** ARC는 다양한 고난도 수학 및 과학 벤치마크에서 프론티어 LLM과 동등하거나 상회하는 성능(C Acc)을 보임 (예: AIME '25에서 캐시 93.3% vs 소스 83.3%) [p.1, p.11].\n* **비용 절감 (Cost & Savings):** 소스 모델에 비해 호출 비용이 **16배에서 291배 저렴함** [p.1]. (각 데이터셋별 빌더 비용과 소스/캐시 비용 구조가 측정됨 [p.25-26]).\n* **교란 테스트 (Perturbation Testing):** 구문적, 매개변수적, 결합적 재작성 테스트를 통해 일반화 및 강건성을 평가함 [p.9].\n\n## 한계 및 주의점\n* 컴파일 후 캐시를 수정하려면 재컴파일이 필요함 [p.8].\n* *그 외 기존 시스템 레벨 캐싱(SLC)의 한계점(모놀리식 캐시는 입력 미세 변화에 취약, 모듈식 캐시는 검토 시 정확성 보장 어려움 및 높은 구축 비용)이 지적됨 [p.2].* (※ 제안 기법 자체의 구체적인 한계는 본문 구간 내에 별도 서술되지 않음)\n\n## AI 엔지니어 관점에서 볼 점\n* LLM 추론 트레이스를 **실행 가능한 파이썬 코드 및 시맨틱 함수**로 변환함으로써, 완전한 설명 가능성(explainability)과 수정 가능성(correctibility)을 확보할 수 있음 [p.3].\n* 무거운 벡터 검색 엔진(Embedding 엔진) 의존성을 제거하는 **캐시 컴파일(Compilation)** 메커니즘을 통해, 런타임에 에지(edge) 장치나 CPU 환경에서도 $O(1)$의 빠르고 경제적인 추론 재사용이 가능함을 보여줌 [p.3, p.7-8].\n* 소형 모델($\\mathcal{T}$) 활용을 위해 수집된 로그를 바탕으로 소스 모델을 통해 합성 데이터를 증강하고 지도학습 미세조정(SFT)을 거치는 파이프라인은 자원 효율적인 에이전트 시스템 구축에 유용한 방법론임 [p.27].\n\n---\n*한 문장 핵심 정리:* CPU-ARC는 고비용의 LLM 에이전트 추론 과정을 재사용 가능한 CPU 실행 코드 및 시맨틱 함수로 컴파일·캐싱하여, 프론티어 모델 수준의 정확도를 유지하면서도 비용을 수십 배 이상 대폭 절감하는 프레임워크입니다 [p.1, p.3, p.7-8, p.11].",
+    "summary_type": "fulltext_llm_ko",
+    "pdf_pages": 28,
+    "text_chunks": 10,
+    "collected_at": "2026-11-09T06:03:36.224990+00:00"
   }
 ]
