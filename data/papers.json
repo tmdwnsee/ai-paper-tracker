@@ -207,5 +207,33 @@
     "pdf_pages": 27,
     "text_chunks": 11,
     "collected_at": "2026-11-11T05:57:10.698770+00:00"
+  },
+  {
+    "id": "2611.14419",
+    "title": "Evaluating LLM-Generated World Models for Neuro-Symbolic Reasoning",
+    "abstract": "Formal world models can support planning, verification, and safety reasoning, but constructing them from open-ended natural-language situations is difficult, particularly in multi-agent settings where several formalizations may be plausible. We study whether five LLMs can generate such world models as partially observable stochastic games and whether mechanical validity is sufficient to establish that the resulting model faithfully represents the intended decision problem. We introduce a benchmark of 44 scenarios spanning game, situational, and cultural settings and evaluate generated world models along three dimensions: mechanical validity, reference-relative structural agreement, and semantic criteria. Across three empirical tracks, we analyze 410 first-pass generations. In the reference-backed game track, 134/135 generated world models pass a strict mechanical audit, yet mean permutation-invariant structural F1 is only 0.366, with just 28/134 mechanically valid models exactly matching the authored reference. In the cultural track, explicitly naming the country changes the generated structural representation for most LLMs while producing only small changes in automated semantic scores. These results show that executability is a necessary but insufficient criterion for LLM-generated world models: models that are mechanically valid can still differ substantially in the structure used by downstream neuro-symbolic reasoning and planning.",
+    "authors": [
+      "Souhaila Djaffal",
+      "Amna Jamal",
+      "Gagana Madhugiri Devaraja",
+      "Anidipta Pal",
+      "Jobst Heitzig"
+    ],
+    "published": "2026-11-10T17:58:12Z",
+    "updated": "2026-11-10T17:58:12Z",
+    "url": "https://arxiv.org/abs/2611.14419",
+    "categories": [
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM",
+      "Agent"
+    ],
+    "relevance_score": 40,
+    "summary": "제공된 논문 텍스트 전체를 바탕으로 작성한 구체적인 Markdown 요약입니다.\n\n## 연구 목적\n* 거대 언어 모델(LLM)이 자연어 상황 설명으로부터 생성한 형식적 세계 모델(formal world models)이 원래의 의사결정 문제를 충실하게(faithfully) 표현하는지 평가합니다 [p.1, p.2].\n* 기계적 타당성(mechanical validity)만으로 생성된 모델이 충실한 세계 모델임을 보장하기에 충분한지 검증합니다 [p.2].\n* 문화적 맥락이나 위치 라벨의 변경이 LLM 생성 세계 모델의 구조와 편향에 미치는 영향을 진단합니다 [p.4, p.17].\n\n## 핵심 아이디어 및 방법\n* **세계 모델 형식:** 부분 관측 가능 확률 게임(Partially Observable Stochastic Games, POSGs)을 구조화된 JSON 또는 실행 가능한 파이썬 클래스로 인코딩합니다 [p.1, p.3].\n* **3단계 평가 프레임워크 (Evaluation Lanes):**\n  1. **Lane 1 (기계적 타당성):** 생성된 모델이 실행 가능하고 내부적으로 일관성이 있는지 확인 [p.2, p.6].\n  2. **Lane 2 (구조적 충실도):** 상태, 행동, 전이 구조가 가용한 참조(reference) 모델과 일치하는지 비교 (참조 기반 게임 트랙의 순열 불변 구조적 F1, 또는 피처-다중집합 일치도 측정) [p.2, p.6].\n  3. **Lane 3 (의미론적 진단):** 원래 상황의 중요 요소 포함 여부 및 지원되지 않는 가정 배제 여부를 프로그래매틱 체크리스트로 테스트 [p.2, p.6].\n* **벤치마크 구성:** 게임, 상황, 문화적 설정을 아우르는 총 44개의 시나리오와 410개의 초판 생성(first-pass generations)을 분석했습니다 [p.1, p.2].\n\n## 실험 및 주요 결과\n* **참조 기반 게임 트랙:** 생성된 135개의 세계 모델 중 134개가 엄격한 기계적 감사를 통과했으나, 작성된 참조 모델과 정확히 일치하는 경우는 28개에 불과하며 평균 순열 불변 구조적 F1 점수는 **0.366**에 그쳤습니다 [p.1].\n* **상황 트랙 (S1–S9):** 135개 중 110개가 Lane 1을 통과했으며, 모델별 F1 점수는 Claude Opus .4910, Qwen 3.8 27B .4796, DeepSeek V4 Flash .4760, Llama 3.3 70B .4288, GPT-5.6 Sol .3207 등으로 측정되었습니다 (전체 평균 구조적 F1: **0.4324**) [p.8].\n* **문화적 트랙 및 위치 라벨 효과:** 국가 이름을 명시적으로 지정하는 것은 의미론적 점수에 미치는 영향(예: Qwen의 최대 **-0.019**)에 비해, 5개 LLM 중 4개의 구조적 F1 점수를 낮추는 등(Qwen의 경우 최대 **-0.0144**) 구조적 왜곡을 유발하는 경향이 관찰되었습니다 [p.8].\n\n## 한계 및 주의점\n* 벤치마크 규모가 작고 의도적으로 수작업으로 제작되었으므로, 결과는 모집단 수준의 LLM 성능 추정치가 아닌 기술적(descriptive) 성격을 지닙니다 [p.8].\n* LLM이 OpenRouter를 통해 외부에서 서빙되었기 때문에 저자들이 기저 가속기 유형이나 하드웨어 수준의 계산 자원을 완전히 통제하거나 기록하지 못했습니다 [p.25].\n* 문화적 편향 분석 시 결과 수준의 정성적 독해 및 수동 주석이 포함되었으며 [p.21], 귀무가설 유의성 검정은 샘플 수 부족으로 인해 보고되지 않았습니다 [p.25].\n\n## AI 엔지니어 관점에서 볼 점\n* 기계적으로 실행 가능하고 문법적으로 완벽한(Lane 1 통과) 모델이라 할지라도, 실제 문제의 구조를 올바르게 반영하는지(Lane 2 구조적 충실도, 평균 F1 ~0.36~0.43)는 별개의 문제이므로 맹신해서는 안 됩니다 [p.1, p.8].\n* 프롬프트에 포함된 위치 라벨이나 문화적 특수성은 의도하지 않은 구조적 변화나 편향을 유발할 수 있으므로, 에이전트 및 세계 모델 생성 파이프라인 설계 시 입력 조건의 민감도를 엄격하게 감사(audit)해야 합니다 [p.8, p.17].\n\n기계적으로 타당한 LLM 생성 세계 모델은 높은 실행 가능성에도 불구하고 실제 의도된 문제 구조와의 일치도(구조적 F1)는 현저히 낮아, 단순한 문법적 검증을 넘어선 엄격한 구조적·의미론적 평가가 필수적입니다 [p.1, p.8].",
+    "summary_type": "fulltext_llm_ko",
+    "pdf_pages": 26,
+    "text_chunks": 9,
+    "collected_at": "2026-11-12T06:59:31.777951+00:00"
   }
 ]
