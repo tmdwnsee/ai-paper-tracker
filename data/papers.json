@@ -289,5 +289,30 @@
     "pdf_pages": 15,
     "text_chunks": 10,
     "collected_at": "2026-11-17T07:44:53.163461+00:00"
+  },
+  {
+    "id": "2611.23225",
+    "title": "StringQFT: A Multiuse Textbook Resource for AI-Assisted Theoretical Physics",
+    "abstract": "We present StringQFT as a textbook collection for string constructions of quantum field theory and as infrastructure for AI-assisted theoretical physics. The collection comprises 18 volumes, 190 chapters and 3,795 pages, covering brane probes, brane webs, geometric engineering, F-theory constructions, wrapped M5-branes and exact worldsheet constructions. Its open-book benchmark inventory contains 1,073 items, including 499 with automatic finite-answer checking. For retrieval-augmented generation, it provides 1,371 section records linked to textbook sources and PDF locations, together with a local lexical retriever. Training-data preparation is illustrated by 21 private, source-linked examples. For agents, it exposes 19 calculation tools with specified inputs and finite domains, connecting tool use to textbook derivations. We illustrate these uses through specific questions, retrieved passages and finite calculations. The textbook collection and accompanying resources are available at https://github.com/xingyang-yu/StringQFT.",
+    "authors": [
+      "Xingyang Yu"
+    ],
+    "published": "2026-11-17T18:58:40Z",
+    "updated": "2026-11-17T18:58:40Z",
+    "url": "https://arxiv.org/abs/2611.23225",
+    "categories": [
+      "hep-th",
+      "cs.AI"
+    ],
+    "topics": [
+      "RAG",
+      "Agent"
+    ],
+    "relevance_score": 30,
+    "summary": "제공된 논문 텍스트 메모를 바탕으로 작성한 구체적인 Markdown 요약입니다.\n\n---\n\n## 연구 목적\n- 양자장이론(Quantum Field Theory, QFT)의 끈 이론적 구성(string constructions)을 학습하고 연결하는 과정은 서로 다른 끈 이론 측면과 언어에 대한 친숙함이 필요하여 명시적 예시를 통해서도 종종 어렵기 때문에, 이를 통합적으로 다루는 교재 리소스와 AI 지원 인프라(StringQFT)를 제공하는 것을 목적으로 합니다 [p.1, p.3, p.6].\n- 동일한 물리적 질문이 열린 끈, 기하학, 감긴 브레인 등 서로 다른 관점과 계산 도구로 표현될 때, 이들을 연결하는 사전과 규약(conventions)을 학습하고 AI 에이전트가 이를 활용할 수 있도록 지원합니다 [p.3, p.6, p.19].\n\n## 핵심 아이디어 및 방법\n- **텍스트북 컬렉션 (Textbook Collection):** 공통된 표기법, 명시적 유도 과정, 연결된 읽기 경로를 제공하는 18개 볼륨(hep-th 기준)의 통합 교재 컬렉션을 제공합니다 [p.1, p.3, p.5].\n- **다루는 주요 접근법:** 브레인 프로브, 현탁된 브레인 및 브레인 웹, 기하학적 공학, F-이론 구성, 감긴 M5-브레인, 정확한 월드시트 구성 등을 포함합니다 [p.1, p.4].\n- **4가지 AI 지원 인프라:**\n  1. **벤치마크 (Benchmark):** 오픈북 벤치마크 인벤토리 제공 [p.1, p.4]\n  2. **검색 증강 생성 (RAG):** 교재 소스 및 PDF 위치에 연결된 섹션 기록과 모델 서비스나 임베딩 인덱스가 필요 없는 로컬 어휘 검색기(local lexical retriever) 제공 [p.1, p.4, p.15]\n  3. **학습 데이터 준비 (Training-data preparation):** 소스에 연결된 예시들을 통한 학습 데이터 준비 시연 [p.1, p.4]\n  4. **에이전트 지원 (Resources for agents):** 지정된 입력과 유한한 도메인을 가진 19개의 계산 도구를 노출하여 도구 사용과 교재 유도를 연결 [p.1, p.4, p.19]\n- **읽기 경로 (Reading Routes):** 브레인에서 기하학으로의 경로, 교차하는 브레인과 월드시트, 시공간 기하학에서의 월드시트 인스턴톤, 감은 M5-브레인, F-이론 및 월드시트-시공간 작용 경로 등을 제공합니다 [p.9, p.11].\n\n## 실험 및 주요 결과\n- **자원 규모:** \n  - 18개 볼륨, 190개 챕터, 3,795페이지 (PDF 기준) [p.1, p.4, p.5]\n  - 질문 인벤토리: 총 1,073개 항목 (자동 유한 정답 검증 가능 499개, 수동 평가 필요 573개, 점수화되지 않은 시연 1개) [p.1, p.4, p.12]\n  - RAG 리소스: 교재 출처 및 PDF 위치와 연결된 1,371개의 섹션 기록 [p.1, p.4, p.15]\n  - 훈련 레코드: 프롬프트와 응답을 소스 자료에 연결하는 21개의 비공개(private) 예시 레코드 (Volume V에서 4개, 다른 볼륨에서 17개) [p.1, p.4, p.17, p.18]\n  - 계산 도구: 19개 [p.1, p.4, p.19]\n- **정량 결과:** \n  - Volume V 클라이언트 실행 결과(Python 3.9.6, SymPy 1.14.0, mpmath 1.3.0 환경), 스케일 $\\lambda = 3u$ 및 특정 입력 계수($N_{0,1} = 5/9$, $N_{0,2} = -11/72$)를 넣었을 때 반환된 GV 계수($n_{0,1}=5$, $n_{0,2}=-2$)를 성공적으로 얻었으며, 역연산(`gv_inverse`)과 정연산(`gv_forward`) 간의 라운드트립 검증(`forward_roundtrip = true`)이 일치함을 확인했습니다 [p.19, 20].\n  - 부울 계수를 가진 부적절한 입력은 예외 처리로 거부되었습니다 [p.20].\n\n## 한계 및 주의점\n- 추가된 부정적 사례와 검사들은 명시된 채점 동작을 테스트하기 위한 것이며, 모든 중첩된 답변 값을 소진하거나 모든 참조 답변의 물리적 정수성을 독립적으로 확립하지는 않습니다 [p.14].\n- 식별자 및 앵커 검사는 소스 내비게이션을 지원하지만, 대표적인 쿼리 세트에 대한 검색 품질, 답변의 충실도, 또는 생성된 답변 시스템의 성능을 측정하지는 않습니다 [p.16].\n- 수치적 확인만으로는 물리적 해석이나 답변의 품질을 보증할 수 없습니다 [p.17].\n- 컬렉션은 현재 모델 리더보드나 모델 성능에 대한 측정된 비교를 제공하지 않으며 [p.15], 전체 솔루션이나 비공개 평가자 입력은 공개 패키지에 포함되지 않습니다 [p.5].\n\n## AI 엔지니어 관점에서 볼 점\n- StringQFT는 무거운 대형 모델 서비스나 별도의 임베딩 인덱스 구축 없이 로컬 어휘 검색기(local lexical retriever)와 토큰 기반 랭킹만으로 작동하는 RAG 파이프라인 설계를 보여줍니다 [p.15].\n- 언어 모델이나 외부 API 키 없이도 외부 에이전트가 결정론적으로 호출할 수 있는 도메인 특화 계산 도구 인터페이스(19개)와 결정론적 클라이언트(예: Volume V 클라이언트)를 제공하여, AI 에이전트의 도구 사용(Tool Use)과 유한 정답 검증(Roundtrip verification)을 결합하는 실용적인 아키텍처 패턴을 제시합니다 [p.1, p.4, p.19].\n\n---\n\n**한 줄 핵심 정리:** StringQFT는 양자장이론의 끈 이론적 구성을 학습·검증하기 위해 18권의 교재, 1,073개의 질문 벤치마크, RAG 검색 리소스, 21개의 훈련 예시, 그리고 19개의 계산 도구를 통합 제공하는 AI 지원 이론 물리 인프라입니다 [p.1, p.4].",
+    "summary_type": "fulltext_llm_ko",
+    "pdf_pages": 23,
+    "text_chunks": 6,
+    "collected_at": "2026-11-18T07:10:53.914759+00:00"
   }
 ]
