@@ -402,5 +402,31 @@
     "pdf_pages": 5,
     "text_chunks": 3,
     "collected_at": "2026-11-21T06:55:00.975664+00:00"
+  },
+  {
+    "id": "2611.31090",
+    "title": "Revisiting Learning to Delegate: LLM Discovered Heuristics for Large-Scale Vehicle Routing",
+    "abstract": "Efficient vehicle routing is critical to logistics and transportation, yet solving large-scale capacitated vehicle routing problems (CVRP) remains computationally challenging due to their combinatorial complexity. One approach to solve large-scale vehicle routing optimization is to identify promising subproblems and then optimize them using solvers. In this paper, we propose a framework of automatic heuristic design (AHD) in which a large language model (LLM) autonomously refines heuristics for selecting subproblems, enabling effective optimization of large-scale CVRP instances. Compared to prior approaches that train task-specific neural networks to select among heuristically constructed subproblems, our method discovers generalizable, interpretable LLM-generated heuristics to directly construct subproblems. Experiments show that our approach achieves comparable in-distribution performance while outperforming neural network-based policies on out-of-distribution instances with large-scale problems.",
+    "authors": [
+      "Zhengyang Wang",
+      "Renfei Tan",
+      "Shuze Daniel Liu",
+      "David Simchi-Levi"
+    ],
+    "published": "2026-11-23T17:36:48Z",
+    "updated": "2026-11-23T17:36:48Z",
+    "url": "https://arxiv.org/abs/2611.31090",
+    "categories": [
+      "cs.AI"
+    ],
+    "topics": [
+      "LLM"
+    ],
+    "relevance_score": 40,
+    "summary": "제공된 논문 메모를 종합하여 작성한 구체적인 Markdown 요약입니다.\n\n---\n\n## 연구 목적\n* 본 연구는 대규모 용량 제한 차량 경로 문제(CVRP, Capacitated Vehicle Routing Problems)의 조합적 복잡성을 해결하기 위해, 대형 언어 모델(LLM)을 활용하여 위임(delegation) 휴리스틱을 자율적으로 발견하는 자동 휴리스틱 설계(AHD, Automatic Heuristic Design) 프레임워크를 재방문합니다 [p.1, p.2].\n* LLM이 효과적인 위임 휴리스틱을 자율적으로 발견할 수 있는지, 그리고 발견된 휴리스틱이 인스턴스 분포, 문제 크기, 수리 솔버(repair solver)가 변경되는 환경에서도 유용한 상태를 유지(전이 성능)하는지 검증하는 것을 핵심 질문으로 다룹니다 [p.2].\n\n## 핵심 아이디어 및 방법\n* **Select-Solve-Merge 프레임워크:** L2D(Learning to Delegate)의 절차를 차용하여, 프로그램이 위임 목록을 형성 및 순위화(Select)하고, 고정된 솔버가 선택된 위임 내 고객 경로를 재최적화(Solve)하며, 실행 가능한 개선 사항을 병합(Merge)하는 방식을 따릅니다 [p.1, p.4].\n* **가설 기반 AHD (Hypothesis-driven AHD):** 기존의 고정 규칙 및 신경망 예측 방식 대신, LLM(GPT-6 Astra 등)이 구체적인 설계 가설과 함께 위임 목록을 구축 및 순위화하는 단일 프로그램을 직접 생성·정제합니다 [p.3, p.5].\n* **수리 솔버 (Repair Solver):** 선택된 위임의 경로 재최적화를 위해 LKH(Lin–Kernighan–Helsgaun) 또는 HGS(hybrid genetic search)를 사용합니다 [p.3].\n* **탐색 및 검증 프로세스:** LLM이 제안한 프로그램에 대해 60초 스크리닝과 120초 전체 평가를 거쳐 후보를 선정한 뒤, 별도의 검증 패널 재평가를 통해 최종 주력 프로그램(예: **정책 135**)을 채택하고, 탐색적 프로그램(예: **정책 143, 147**)을 추가로 검토합니다 [p.5, p.7, p.8]. 일단 프로그램이 발견되면 라우팅 실행 시 추가적인 LLM 호출은 필요하지 않습니다 [p.8, p.10].\n\n## 실험 및 주요 결과\n* **데이터셋 및 설정:** 고객 500명 규모의 합성 CVRP 패밀리(CVRP-S: Uniform, Clustered, Mixed 분포)를 탐색 및 검증에 사용하고, 고객 500명, 1000명, 2000명 규모의 CVRPLIB 기반 CVRP-X 패밀리를 분포 외(out-of-distribution) 전이 테스트에 사용했습니다 [p.6].\n* **검증 결과:** 12개의 동결된 후보 중 검증 패널에서 가장 높은 평균 절감률(5.2403%)을 기록한 **정책 135(Policy 135)**가 주 프로그램으로 선정되었습니다 [p.7, p.13].\n* **CVRP-X 분포 외 테스트 결과 (LKH 솔버 사용):** \n  * 정책 135는 모든 세 가지 크기(500, 1000, 2000 고객)에서 기존 L2D 모델들(L2D Uniform, L2D C/M)보다 더 높은 평균 절감률을 달성했습니다 (우위 범위: 0.24 ~ 0.62 percentage points) [p.8].\n  * HGS 솔버를 사용한 경우에도 1000 및 2000 고객에서 L2D C/M 대비 각각 0.18, 0.25 percentage points 향상되었습니다 [p.8].\n* **탐색적 프로그램(정책 143, 147) 결과:** 검증 순위는 주 프로그램보다 낮았으나, 모든 7개 테스트 패널에서 정책 135보다 높은 관측 평균 감소율을 기록하며 우수한 전이 성능을 보였습니다 [p.2, p.8, p.10].\n* **컴퓨팅 비용:** LLM 탐색 및 전이에 총 22시간 21분 02초가 소요되었으며, 회계 청구 금액은 $109.79(추가 유보금 $16.57)가 소요되었습니다 [p.8].\n\n## 한계 및 주의점\n* 단일 검증 패널(LKH를 사용하는 500고객 CVRP-S 인스턴스)에서 얻은 순위가 동일한 인스턴스 패밀리 내의 held-out 인스턴스에서도 그대로 유지되지 않고 변동될 수 있음이 관찰되었습니다 [p.8, p.10].\n* 향후 캠페인에서는 사용이 예상되는 서로 다른 인스턴스 패밀리, 크기, 복구 솔이버를 포괄하는 별도의 검증 패널에서 단축된 프로그램들을 비교해야 할 수 있습니다 [p.10].\n* 본문에서 명시된 성능 비교와 수치들은 모두 제공된 메모 내 실험 결과(CVRP-S 및 CVRP-X 패널)에 국한되며, 그 외의 환경으로의 일반화에는 주의가 필요합니다.\n\n## AI 엔지니어 관점에서 볼 점\n* **LLM을 통한 코드 형태의 휴리스틱 자동 생성:** LLM에게 전체 VRP 솔버를 처음부터 설계하게 하는 대신, 'Select-Solve-Merge'라는 모듈화된 프레임워크 내에서 위임 규칙(프로그램)을 작성하도록 제한함으로써, 대규모 조합 최적화 문제에서 계산 비용을 낮추고 실효성 있는 알고리즘을 자율 발견할 수 있음을 입증했습니다 [p.1, p.3, p.10].\n* **추론 비용 대 성능의 효율성:** 소요 비용 약 $110 및 22시간의 탐색 자원으로 기존 학습 기반 신경망(L2D) 모델들을 능가하거나 비등한 분포 외(OOD) 전이 성능을 내는 프로그램을 얻었으므로, 도메인 알고리즘 엔\n지니어링 과정에서 휴리스틱 탐색 자동화 도구로 LLM을 파이프라인에 통합하는 접근이 매우 실용적임을 보여줍니다 [p.2, p.8].\n* **검증 패널 구성의 중요성:** 검증 패널의 구성(크기, 분포, 솔버 종류)에 따라 최적의 프로그램 순위가 달라질 수 있으므로, 타겟 배포 환경의 다양성을 반영한 엄격한 다중 검증 패널 설계를 동반해야 엔지니어링 실패 리스크를 줄일 수 있습니다 [p.8, p.10].\n\n---\n대형 언어 모델(LLM)을 활용한 가설 기반 자동 휴리스틱 설계(AHD) 프레임워크는 대규모 차량 경로 문제(CVRP)에서 기존 신경망 기반 모델과 유사하거나 뛰어난 분포 외 전이 성능을 가진 위임 프로그램을 자율적으로 발견할 수 있음을 입증했습니다 [p.1, p.2, p.8].",
+    "summary_type": "fulltext_llm_ko",
+    "pdf_pages": 19,
+    "text_chunks": 7,
+    "collected_at": "2026-11-24T09:42:25.963064+00:00"
   }
 ]
