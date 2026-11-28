@@ -477,5 +477,40 @@
     "pdf_pages": 16,
     "text_chunks": 5,
     "collected_at": "2026-11-27T08:08:07.086797+00:00"
+  },
+  {
+    "id": "2611.34440",
+    "title": "vSFT: Learning to Verbally Tune Agents at Test Time",
+    "abstract": "Large language model agents are increasingly improved via agentic reinforcement learning, which can be on-policy but suffers from expensive rollouts and sparse rewards, limiting its application at test time. In this paper, we present a verbally Supervised Fine-Tuning (vSFT) framework that enables the conjunction of dense feedback in natural language and weight updates at test time. Specifically, our vSFT forms a closed loop between an agent and a supervisor via a hypernetwork, in which the supervisor generates verbal supervision from the agent's failed trajectories, and the hypernetwork converts that supervision into low-rank weight updates to tune the agent. We validate that this test-time in-parameter evolving process outperforms both its in-context counterparts and prevalent reinforcement learning methods. In particular, our vSFT using Qwen3-4B outperforms GRPO and Reflexion by 8.7% and 13.9% in success rate on ALFWorld, and by 4.8% and 18.2% on WebShop, respectively. We believe that learning how to adapt a model, rather than an adapted model, offers a promising path towards more capable agents that improve themselves.",
+    "authors": [
+      "Qishuai Wen",
+      "Rui Chen",
+      "Haiwen Li",
+      "Zhiyuan Huang",
+      "Qiwen Gu",
+      "Bingjie Gao",
+      "Geng Li",
+      "Jing Tang",
+      "Xiangxiang Chu",
+      "Chun-Guang Li"
+    ],
+    "published": "2026-11-25T14:22:22Z",
+    "updated": "2026-11-25T14:22:22Z",
+    "url": "https://arxiv.org/abs/2611.34440",
+    "categories": [
+      "cs.AI",
+      "cs.CL",
+      "cs.LG"
+    ],
+    "topics": [
+      "LLM",
+      "Agent"
+    ],
+    "relevance_score": 30,
+    "summary": "제공된 논문 텍스트를 바탕으로 작성된 구체적인 요약은 다음과 같습니다.\n\n---\n\n## 연구 목적\n- 대형 언어 모델(LLM) 기반 에이전트의 테스트 타임(test-time) 적응 시 발생하는 한계—예컨대 온정책(on-policy) 방식의 비싼 롤아웃 비용, 희소한(sparse) 보상 [p. 1], 오프정책 SFT의 분포 이동 취약성 [p. 2], 인컨텍스트 반성의 컨텍스트 오버헤드 및 행동 제어력 부족 [p. 2] 등을 극복하고자 함.\n- 역전파(back-propagation) 없이 테스트 타임에 자연어 형태의 조밀한 피드백을 가중치 업데이트로 변환하여 에이전트의 성능을 효과적으로 끌어올리는 프레임워크를 제안하고 평가함 [p. 1, p. 2, p. 3].\n\n## 핵심 아이디어 및 방법\n- **vSFT (verbally Supervised Fine-Tuning) 프레임워크**: 테스트 타임에 에이전트, 환경, 슈퍼바이저, 하이퍼네트워크 간의 폐쇄 루프(closed loop)를 형성함 [p. 1, p. 2].\n  - **슈퍼바이저**: 실패한 궤적으로부터 언어적 감독(기술 및 반성 등 피드백)을 생성함 [p. 1, p. 2].\n  - **하이퍼네트워크**: 이 언어적 피드백을 저랭크 가중치 업데이트(LoRA 어댑터 형태)로 변환하여 에이전트를 튜닝함 [p. 1, p. 2, p. 5].\n- **주요 속성**: \n  - 백프로파게이션 없이 테스트 타임 적응 수행 [p. 2].\n  - 텍스트 형태의 문맥 내 학습이 아닌, 파라미터 내 적응(in-parameter adaptation)을 통해 신뢰성과 문맥 효율성을 높임 [p. 3].\n  - 오프라인 하이퍼네트워크 메타 학습을 통해 훈련되며, SFT 방식의 표준 교차 엔트로피 손실로 학습됨 [p. 6, p. 14].\n  - TIES-Merging 등의 방식을 통해 개별 태스크의 LoRA 어댑터를 병합하여 지속적인 파라미터 적응 및 일반화 수행 [p. 3, p. 13].\n\n## 실험 및 주요 결과\n- **사용된 데이터셋**: ALFWorld, WebShop, JSONSchemaBench, SCBench [p. 1, p. 7, p. 15]\n- **비교군**: GRPO, Reflexion, SFT, vRL, 인컨텍스트 학습 베이스라인 등 [p. 1, p. 3, p. 8, p. 15]\n- **정량 결과**:\n  - Qwen3-4B를 사용한 vSFT는 ALFWorld 성공률에서 GRPO와 Reflexion 대비 각각 **8.7%**, **13.9%** 더 우수한 성능을 기록함 [p. 1].\n  - WebShop에서는 GRPO와 Reflexion 대비 각각 **4.8%**, **18.2%** 더 우수한 성공률을 보임 [p. 1].\n  - 감독자가 에이전트보다 유능한 모델(Qwen-Plus)일 때, Reflexion 대비 ALFWorld에서 **1.5%**, WebShop에서 **12.6%** 더 우수한 성능을 기록함 [p. 9].\n  - **롤아웃 및 비용 절감**: ALFWorld에서 GRPO는 284,160개의 롤아웃이 필요한 반면, vSFT는 10,712개(GRPO 예산의 **3.8%**)만 필요로 하였으며 [p. 14], 총 학습 시간을 623시간에서 54시간으로 **91% 절감**함 [p. 14].\n\n## 한계 및 주의점\n- 본문 구간에 명시된 직접적인 방법론 자체의 한계 서술은 제한적이나, 기존 언어적 강화학습(vRL) 및 인컨텍스트 반성의 한계(장기 호라이즌 작업에서의 효과 저하, 반복적 컨텍스트 오버헤드, 행동 유도 불안정성)를 해결하기 위해 제안됨 [p. 2].\n- (※ 기타 구체적인 알고리즘적 결함이나 한계는 제공된 본문 구간 내에 추가로 서술되지 않음)\n\n## AI 엔지니어 관점에서 볼 점\n- **역전파 없는 파라미터 적응**: LLM 에이전트 파인튜닝 시 런타임에 무거운 백프로파게이션을 수행하는 대신, 사전 훈련된 하이퍼네트워크(Doc-to-LoRA 구조 등)를 통해 텍스트 피드백을 실시간 LoRA 어댑터로 변환·적용하는 패러다임을 제시함 [p. 3, p. 5, p. 13].\n- **비용 효율성과 롤아웃 절감**: 강화학습(예: GRPO)이 요구하는 방대한 온정책 롤아웃 비용을 획기적으로 낮추면서(91% 학습 시간 절감) 동등 또는 그 이상의 성능을 달성할 수 있음을 입증하여, 실무에서 에이전트 사후 학습 및 테스트 타임 최적화 비용을 대폭 줄일 수 있는 대안이 됨 [p. 14].\n- **모듈화된 파이프라인**: 데이터 수집과 최적화를 분리하여 오프라인 데이터 수집을 허용하고, TIES-Merging 등을 통한 어댑터 통합으로 멀티 태스크 일반화가 가능하다는 점에서 에이전트 엔지니어링에 실질적인 인사이트를 제공함 [p. 3, p. 13, p. 14].\n\n---\n\n**한 문장 핵심 정리:** vSFT는 역전파 없이 언어적 피드백을 하이퍼네트워크를 통해 LoRA 가중치 업데이트로 변환하여, 에이전트 테스트 타임 적응의 롤아웃 비용과 컨텍스트 오버헤드를 획기적으로 줄이면서도 성능을 극대화하는 프레임워크이다 [p. 1, p. 2, p. 3, p. 14].",
+    "summary_type": "fulltext_llm_ko",
+    "pdf_pages": 17,
+    "text_chunks": 8,
+    "collected_at": "2026-11-28T07:33:37.236077+00:00"
   }
 ]
